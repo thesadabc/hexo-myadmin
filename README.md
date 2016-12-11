@@ -1,9 +1,9 @@
 # hexo-myadmin
 
-a hexo dashboard plugin, for live server.
+a hexo dashboard plugin, for live hexo server.
 
 
-# Screenshots
+## Screenshots
 
 ![posts view](doc/post.jpeg?raw=true)
 
@@ -46,7 +46,7 @@ have it be long and complicated.
 
 ## Thanks
 
-[hexo-myadmin](https://www.npmjs.com/hexo-admin)
+[hexo-admin](https://www.npmjs.com/hexo-admin)
 
 ### Contribute
 - let me know how it can be improved in the [github issues](https://github.com/thesadabc/hexo-myadmin/issues)
