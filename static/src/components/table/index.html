@@ -25,7 +25,7 @@
         </tbody>
     </table>
     <div v-if="data.length==0" class="table-empty">
-        <p>列表为空</p>
+        <p>EMPTY</p>
     </div>
     <zpagenav v-if="total>0" :page="page" :page-size="10" :total="total" :max-link="7" :page-handler="pageHandler" ></zpagenav>
 </div>
