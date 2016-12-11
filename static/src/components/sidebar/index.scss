@@ -1,0 +1,53 @@
+@import '../../_config.scss';
+$sideBarMenuHeight: 40px;
+$sideBarPaddingLeft: 25px;
+$sideBarSecendLevelPaddingLeft: 35px;
+.m-sidebar {
+    background: $mainDark;
+    ul, li {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+    .menu {
+        margin-top: $distanceMiddle;
+        a {
+            display: block;
+            line-height: $sideBarMenuHeight;
+            padding: 0 $sideBarPaddingLeft;
+            color: $fontColorGray;
+            border-left: 5px $mainDark solid;
+            background-color: $mainDark;
+            text-decoration: none;
+            &.v-link-active,
+            &:hover {
+                color: $fontColorWhite;
+                background-color: $mainDarkHover;
+                border-left-color: $mainBlue;
+            }
+        }
+        .fa.arrow {
+            float: right;
+            line-height: $sideBarMenuHeight;
+            pointer-events: none;
+            &:before {
+                content: "\f104";
+                color: $fontColorWhite;
+            }
+        }
+        .active {
+            .fa.arrow:before {
+                content: "\f107";
+            }
+        }
+        .nav-second-level {
+            height: 0px;
+            position: relative;
+            overflow: hidden;
+            transition: all .35s ease;
+            a {
+                padding-left: $sideBarSecendLevelPaddingLeft;
+            }
+        }
+    }
+}

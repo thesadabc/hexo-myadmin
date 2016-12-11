@@ -1,0 +1,8 @@
+<div class="m-post_list">
+    <div class="header">
+        <h1 class="title">{{headerConfig.title}}</h1>
+        <router-link v-if="headerConfig.action" class="button action" :to="headerConfig.action.to">{{headerConfig.action.text}}</router-link>
+    </div>
+    
+    <m-table  class="table" ref="table" :header="tableConfig.header" :data="tableConfig.data" :total="tableConfig.total" ></m-table>
+</div>

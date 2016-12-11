@@ -1,0 +1,9 @@
+<div class="m-post_edit">
+    <div class="post-info">
+        <textarea class="meta" ref="meta">{{postDetail.meta}}</textarea>
+    </div>
+    <div class="post-base">
+        <m-mde classs="contetn" ref="content" :value="postDetail.content"></m-mde>
+    </div>
+    <button @click="submit">发布</button>
+</div>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>hexo-myadmin</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script src="https://unpkg.com/vue-pagenav@1.5.0/dist/vue-pagenav.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <link href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet" >
+    <link href="https://necolas.github.io/normalize.css/5.0.0/normalize.css"  rel="stylesheet">
+    
+    <!-- markdown editor -->
+    <script src="https://unpkg.com/simplemde@1.11.2/dist/simplemde.min.js"></script>
+    <link href="https://unpkg.com/simplemde@1.11.2/dist/simplemde.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div id="app">
+        <m-nav class="navbar" :menus="navMenus"></m-nav>
+        <div class="container">
+            <m-side class="sidebar" :menus="sideMenus"></m-side>
+            <div class="router-wrap">
+                <router-view class="router"></router-view>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="index.js" charset="utf-8"></script>
+</html>

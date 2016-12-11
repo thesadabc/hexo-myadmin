@@ -1,0 +1,49 @@
+@import './_config.scss';
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color: $mainBg;
+}
+
+textarea {
+    resize: vertical;
+}
+
+
+a {
+    text-decoration: none;
+    &[href] {
+        color: $mainBlue;
+        &:hover {
+            color: $mainBlueHover;
+        }
+    }
+}
+
+.button, button {
+    padding: $btnPaddingTop $btnPaddingLeft;
+    background-color: $mainBlue;
+    border: 1px $mainBlue solid;
+    color: $fontColorWhite;
+    border-radius: $borderRadius;
+    border: none;
+    cursor: pointer;
+    line-height: 1em;
+    &:hover {
+        background-color: $mainBlueHover;
+    }
+    &.inverse {
+        border: 1px $borderColor solid;
+        background-color: #fff;
+        color: $fontColorMain;
+        &:hover {
+            background-color: $mainBgHover;
+        }
+    }
+}
+

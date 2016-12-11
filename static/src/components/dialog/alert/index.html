@@ -1,0 +1,15 @@
+<div class="m-alert m-dialog">
+    <div class="bg" @click="close"></div>
+    <div class="content">
+        <div class="header">
+            <h1 class="title">{{title}}</h1>
+            <i class="fa close" @click="close"></i>
+        </div>
+        <div class="body">
+            {{content}}
+        </div>
+        <div class="footer">
+            <button @click="close">确认</button>
+        </div>
+    </div>
+</div>

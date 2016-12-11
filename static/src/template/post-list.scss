@@ -1,0 +1,22 @@
+@import '../_config.scss';
+
+$headerHight: 35px;
+.m-post_list {
+    >.header {
+        padding-bottom: $distanceSmall;
+        margin: 0 $distanceMiddle $distanceMiddle;
+        border-bottom: 1px solid $borderColor;
+        >.title {
+            font-size: $fontSizeLarge;
+            color: $fontColorGray;
+            display: inline-block;
+            line-height: $headerHight;
+            margin: 0;
+        }
+        >.action {
+            float: right;
+            height: $headerHight;
+            color: #fff;
+        }
+    }
+}
