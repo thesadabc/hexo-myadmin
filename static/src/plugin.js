@@ -2,22 +2,17 @@ var dialog = require("./components/dialog");
 
 module.exports.install = function(Vue, option) {
 
-
     Vue.alert = function(content) {
         return new Promise(function(resolve) {
             var _instance = new dialog.Alert({ data: { content: content } });
             _instance.$on("close", resolve);
-            _instance.show();
         });
     };
 
     Vue.confirm = function(content) {
         return new Promise(function(resolve, reject) {
             var _instance = new dialog.Confirm({ data: { content: content } });
-            _instance.$once("confirm", function(confirm) {
-                confirm && resolve()
-            });
-            _instance.show();
+            _instance.$on("confirm", resolve);
         });
     };
 

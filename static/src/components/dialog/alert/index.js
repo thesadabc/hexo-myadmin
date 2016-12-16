@@ -27,6 +27,7 @@ module.exports = Vue.extend({
     created: function() {
         this.$nextTick(function() {
             document.body.appendChild(this.$mount().$el);
+            this.show();
         });
     }
 });

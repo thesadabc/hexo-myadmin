@@ -1,4 +1,4 @@
-var gulp = require("gulp"),
+let gulp = require("gulp"),
     del = require("del"),
     minifyHtml = require("gulp-minify-html"),
     uglify = require("gulp-uglify"),
@@ -10,17 +10,17 @@ var gulp = require("gulp"),
 
 
 // for console resources
-var srcPath = {
+let srcPath = {
     script: "static/src/index.js",
     html: "static/src/*.html",
     style: "static/src/**/*.scss",
     resource: "static/src/resources/*",
 };
-var distPath = {
+let distPath = {
     root: "static/dist"
 };
 
-var webpackConfig = {
+let webpackConfig = {
     output: {
         filename: "index.js",
     },
@@ -36,7 +36,7 @@ var webpackConfig = {
 gulp.task("script", function() {
     return gulp.src(srcPath.script)
         .pipe(webpack(webpackConfig))
-        .pipe(uglify())
+        // .pipe(uglify())
         .pipe(gulp.dest(distPath.root));
 });
 
@@ -70,7 +70,7 @@ gulp.task("build", gulpSequence("clean", ["script", "style", "html", "resource"]
 // for debug
 gulp.task("watch", function() {
 
-    var browserSync = require("browser-sync");
+    let browserSync = require("browser-sync");
 
     browserSync.init({
         proxy: "localhost:4000",
