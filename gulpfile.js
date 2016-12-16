@@ -36,7 +36,7 @@ let webpackConfig = {
 gulp.task("script", function() {
     return gulp.src(srcPath.script)
         .pipe(webpack(webpackConfig))
-        // .pipe(uglify())
+        .pipe(uglify())
         .pipe(gulp.dest(distPath.root));
 });
 

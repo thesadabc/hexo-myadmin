@@ -1,6 +1,6 @@
 {
   "name": "hexo-myadmin",
-  "version": "0.2.6",
+  "version": "0.2.8",
   "main": "lib/index.js",
   "scripts": {
     "prepublish": "gulp build"
