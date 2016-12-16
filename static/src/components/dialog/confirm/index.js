@@ -1,27 +1,26 @@
-
 module.exports = Vue.extend({
     template: require("./index.html"),
-    data: function () {
+    data: function() {
         return {
             title: "提示",
             content: "提示",
         }
     },
     methods: {
-        show: function () {
+        show: function() {
             this.$el.classList.add("in")
         },
 
         // btn click
-        confirm: function () {
+        confirm: function() {
             this.$emit("confirm", true);
             this.close();
         },
-        cancel: function () {
+        cancel: function() {
             this.$emit("confirm", false);
             this.close();
         },
-        close: function () {
+        close: function() {
             this.$emit("close");
             this._hide();
             this.$el.remove();
@@ -29,11 +28,13 @@ module.exports = Vue.extend({
         },
 
         // inner fn
-        _hide: function () {
+        _hide: function() {
             this.$el.classList.remove("in")
         }
     },
-    created: function () {
-        document.body.appendChild(this.$mount().$el)
+    created: function() {
+        this.$nextTick(function() {
+            document.body.appendChild(this.$mount().$el);
+        });
     }
 });
