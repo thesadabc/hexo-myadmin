@@ -1,9 +1,9 @@
 <div class="m-post_edit">
     <div class="post-info">
-        <textarea class="meta" ref="meta">{{postDetail.meta}}</textarea>
+        <m-ymle class="meta" ref="meta" :value="postDetail.meta"></m-ymle>
     </div>
     <div class="post-base">
-        <m-mde classs="contetn" ref="content" :value="postDetail.content"></m-mde>
+        <m-mde classs="content" ref="content" :value="postDetail.content"></m-mde>
     </div>
     <button @click="submit">publish</button>
 </div>

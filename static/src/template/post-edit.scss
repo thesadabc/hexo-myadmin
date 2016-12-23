@@ -16,17 +16,6 @@ $panelWidth: 300px;
             width: 100%;
             height: 700px;
             line-height: $inputHeight;
-            margin-bottom: $distanceMiddle;
-            padding: 0 $distanceSmall;
-            border: 1px solid $borderColor;
-            border-radius: $borderRadius;
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-            &:focus {
-                border-color: #66afe9;
-                outline: 0;
-                box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
-            }
         }
     }
 }

@@ -2,6 +2,7 @@ module.exports = Vue.extend({
     template: require("../template/post-edit.html"),
     components: {
         "m-mde": require("../components/markdown-editor"),
+        "m-ymle": require("../components/yml-editor"),
     },
     data: function() {
         return { post: {} }
@@ -35,7 +36,7 @@ module.exports = Vue.extend({
         submit: function() {
             var self = this;
             var newPost = {
-                meta: self.$refs.meta.value,
+                meta: self.$refs.meta.getValue(),
                 content: self.$refs.content.getValue(),
             };
 
