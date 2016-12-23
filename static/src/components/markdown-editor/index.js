@@ -11,14 +11,24 @@ module.exports = Vue.extend({
     },
     created: function() {
         this.$nextTick(function() {
+            var insertMore = {
+                name: "more",
+                action: function(editor) {
+                    var moreTag = "<!--more-->\n";
+                    editor.codemirror.replaceSelection(moreTag);
+                    editor.codemirror.focus();
+                },
+                className: "fa fa-ellipsis-h",
+                title: "Insert More Split"
+            };
             this.mdEditor = new SimpleMDE({
                 element: this.$refs.editor,
                 indentWithTabs: false,
                 tabSize: 4,
                 spellChecker: false,
-                toolbar: ["bold", "italic", "strikethrough", "heading", "|", "quote", "unordered-list", "ordered-list", "|", "code", "table", "link", "image", "horizontal-rule", "|", "fullscreen"],
-                autoDownloadFontAwesome: false
+                toolbar: ["bold", "italic", "strikethrough", "heading", "|", "quote", "unordered-list", "ordered-list", "|", "code", "table", "link", "image", "horizontal-rule", insertMore, "|", "fullscreen"],
+                autoDownloadFontAwesome: false,
             });
-        })
+        });
     }
 });
