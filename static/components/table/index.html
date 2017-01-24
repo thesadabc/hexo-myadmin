@@ -1,0 +1,31 @@
+<div class="m-table">
+    <table>
+        <thead>
+            <tr>
+                <th v-for="item in header">
+                    <a>{{item}}</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="rowData in data">
+                <template v-for="item in rowData.items">
+                    <td v-if="typeof(item)!=='object'">
+                        <span >{{item}}</span>
+                    </td>
+                    <td v-else width="1%" align="left">
+                        <template v-for="action in item">
+                            <a v-if="action.event" href="#" class="action" @click.prevent="$emit(action.event,rowData.rowItem)">{{action.text}}</a>
+                            <router-link v-if="action.to" class="action" :to="action.to">{{action.text}}</router-link>
+                            <a v-if="action.href" class="action" :href="action.href" target="_blank">{{action.text}}</router-link>
+                        </template>
+                    </td>
+                </template>
+            </tr>
+        </tbody>
+    </table>
+    <div v-if="data.length==0" class="table-empty">
+        <p>列表为空</p>
+    </div>
+    <zpagenav v-if="total>0" :page="page" :page-size="20" :total="total" :max-link="7" :page-handler="pageHandler"></zpagenav>
+</div>

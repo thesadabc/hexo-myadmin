@@ -1,26 +1,32 @@
-let gulp = require("gulp"),
+var path = require("path"),
     del = require("del"),
+    gulp = require("gulp"),
     minifyHtml = require("gulp-minify-html"),
     uglify = require("gulp-uglify"),
+    rev = require('gulp-rev'),
+    revCollector = require('gulp-rev-collector'),
     sass = require("gulp-sass"),
     uglifycss = require("gulp-uglifycss"),
-    concat = require("gulp-concat"),
     gulpSequence = require("gulp-sequence"),
-    webpack = require("webpack-stream");
+    concat = require("gulp-concat"),
+    webpack = require("gulp-webpack");
+
 
 
 // for console resources
-let srcPath = {
-    script: "static/src/index.js",
-    html: "static/src/*.html",
-    style: "static/src/**/*.scss",
-    resource: "static/src/resources/*",
+var consoleSrc = {
+    root: "static",
+    script: "static/index.js",
+    style: "static/**/*.scss",
+    html: "static/*.html",
+
+    resources: "static/resources/**/*",
 };
-let distPath = {
-    root: "static/dist"
+var consoleDist = {
+    root: "dist/",
 };
 
-let webpackConfig = {
+var webpackConfig = {
     output: {
         filename: "index.js",
     },
@@ -30,47 +36,64 @@ let webpackConfig = {
             loader: "html?attrs=false&minimize=true&conservativeCollapse=false",
         }]
     },
+    resolve: {
+        alias: {
+            "common": path.resolve(consoleSrc.root, "./common"),
+            "components": path.resolve(consoleSrc.root, "./components"),
+            "services": path.resolve(consoleSrc.root, "./services"),
+        }
+    }
+};
 
-}
-
-gulp.task("script", function() {
-    return gulp.src(srcPath.script)
+gulp.task("console.script", function() {
+    return gulp.src(consoleSrc.script)
         .pipe(webpack(webpackConfig))
+        // .pipe(rev())
         .pipe(uglify())
-        .pipe(gulp.dest(distPath.root));
+        // .pipe(gulp.dest(consoleDist.root))
+        // .pipe(rev.manifest("rev-manifest-js.json"))
+        .pipe(gulp.dest(consoleDist.root));
 });
 
-gulp.task("style", function() {
-    return gulp.src(srcPath.style)
-        .pipe(sass())
-        .pipe(uglifycss())
+gulp.task("console.style", function() {
+    return gulp.src(consoleSrc.style)
+        .pipe(sass({ includePaths: [path.resolve(consoleSrc.root)] }))
         .pipe(concat("index.css"))
-        .pipe(gulp.dest(distPath.root))
+        // .pipe(rev())
+        .pipe(uglifycss())
+        // .pipe(gulp.dest(consoleDist.root))
+        // .pipe(rev.manifest("rev-manifest-css.json"))
+        .pipe(gulp.dest(consoleDist.root));
 });
 
-gulp.task("html", function() {
-    return gulp.src(srcPath.html)
+gulp.task("console.html", function() {
+    return gulp.src([path.join(consoleDist.root, "*.json"), consoleSrc.html])
+        .pipe(revCollector())
         .pipe(minifyHtml())
-        .pipe(gulp.dest(distPath.root));
+        .pipe(gulp.dest(consoleDist.root));
 });
 
-gulp.task("resource", function() {
-    return gulp.src(srcPath.resource, { base: "static/src/resources" })
-        .pipe(gulp.dest(distPath.root));
+gulp.task("console.resources", function() {
+    return gulp.src(consoleSrc.resources, { base: "static/resources" })
+        .pipe(gulp.dest(consoleDist.root));
 });
 
-// clean
+
+gulp.task("console.build", gulpSequence(["console.script", "console.style"], ["console.html", "console.resources"]));
+// console end
+
+
+
 gulp.task("clean", function() {
-    return del(["static/dist/*"]);
+    return del(["dist/*"]);
 });
 
-// build
-gulp.task("build", gulpSequence("clean", ["script", "style", "html", "resource"]));
+gulp.task("build", gulpSequence("clean", "console.build"));
 
-// for debug
+
 gulp.task("watch", function() {
 
-    let browserSync = require("browser-sync");
+    var browserSync = require("browser-sync");
 
     browserSync.init({
         proxy: "localhost:4000",
@@ -79,11 +102,16 @@ gulp.task("watch", function() {
         open: false,
     });
 
-    gulp.watch(srcPath.html, ["html"]);
-    gulp.watch(srcPath.style, ["style"]);
-    gulp.watch(["static/src/**/*.js", "static/src/*/**/*.html"], ["script"]);
+    function update(task) {
+        return function(event) {
+            console.log("update file : " + event.path);
+            gulpSequence(task, browserSync.reload)
+        }
+    }
 
-    gulp.watch([distPath.root + "/*"], browserSync.reload);
+    gulp.watch(consoleSrc.html, update("console.html"));
+    gulp.watch(consoleSrc.style, update("console.style"));
+    gulp.watch(["static/**/*.js", "static/**/*.html"], update("console.script"));
 });
 
 gulp.task("dev", gulpSequence("build", "watch"));

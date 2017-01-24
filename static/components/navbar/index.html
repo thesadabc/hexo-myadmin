@@ -1,0 +1,4 @@
+<nav class="m-nav">
+    <slot></slot>
+    <a class="nav-menu" v-for="item in menus" :href="item.href">{{item.text}}</a>
+</nav>

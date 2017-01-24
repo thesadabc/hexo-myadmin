@@ -1,0 +1,15 @@
+<div class="m-sidebar">
+    <ul class="menu" ref="menu">
+        <li v-for="item in menus">
+            <router-link v-if="!item.subMenu" :to="item.href" exact>{{item.text}}</router-link>
+            <template v-else>
+                <a href="#" @click.prevent="toggleMenu">{{item.text}}<i class="fa arrow"></i></a>
+                <ul class="nav-second-level">
+                    <li v-for="subItem in item.subMenu">
+                        <router-link :to="subItem.href" exact>{{subItem.text}}</router-link>
+                    </li>
+                </ul>
+            </template>
+        </li>
+    </ul>
+</div>

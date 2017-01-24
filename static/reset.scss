@@ -1,0 +1,52 @@
+@import '_config';
+
+*{
+    box-sizing: border-box;
+    font-family: 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+    color: $fontColorMain;
+}
+
+html, body{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    font-size: $fontSizePrimary;
+    background-color: #fff;
+}
+textarea{
+    resize: vertical;
+}
+a{
+    text-decoration: none;
+    &[href]{
+        color: $mainBlue;
+        &:hover{
+            color: $mainBlueHover;
+        }
+    }
+}
+
+
+button, .button, a.button {
+    padding: 0 $btnPaddingLeft;
+    background-color: $mainBlue;
+    color: $fontColorWhite;
+    border-radius: $borderRadius;
+    border: none;
+    cursor: pointer;
+    line-height: $inputHeight;
+    &:hover {
+        background-color: $mainBlueHover;
+        color: $fontColorWhite;
+    }
+    &.inverse {
+        border: 1px $borderColor solid;
+        background-color: #fff;
+        color: $fontColorMain;
+        &:hover {
+            background-color: $mainBgHover;
+        }
+    }
+}
+

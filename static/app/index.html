@@ -1,0 +1,11 @@
+<div class="m-root">
+    <m-nav class="navbar" :menus="navMenus">
+    	<a class="logo" href="#/">hexoMyAdmin</a>
+    </m-nav>
+    <div class="m-content">
+        <m-sidebar class="m-sidebar" :menus="sideMenus"></m-sidebar>
+        <div class="m-container">
+            <router-view class="m-router"></router-view>
+        </div>
+    </div>
+</div>

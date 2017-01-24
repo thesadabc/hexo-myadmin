@@ -1,0 +1,27 @@
+@import '_config';
+
+.m-nav{
+    width: 100%;
+    line-height: $navBarHeight;
+    padding: 0 $distanceMiddle;
+    text-align: right;
+    background-color: $mainBlue;
+    .logo{
+        float: left;
+        color: #fff;
+        padding: 0 $distanceMiddle;
+        &:hover{
+            color: #fff;
+        }
+    }
+    .nav-menu{
+        display: inline-block;
+        color: $fontColorWhite;
+        padding: 0 $distanceMiddle;
+        &:hover{
+            color: $fontColorWhite;
+            background-color: $mainBlueHover;
+        }
+    }
+}
+

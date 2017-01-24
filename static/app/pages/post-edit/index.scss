@@ -1,0 +1,24 @@
+@import '_config';
+$panelWidth: 300px;
+.m-post_edit {
+    .post-base {
+        margin-right: $panelWidth + $distanceMiddle;
+        .content {
+            margin-bottom: $distanceMiddle;
+        }
+    }
+    .post-info {
+        width: $panelWidth;
+        float: right;
+        .meta {
+            width: 100%;
+            line-height: $inputHeight;
+        }
+        .publish{
+            margin-top: $distanceMiddle;
+        }
+    }
+    .page-content{
+        padding: 0 $distanceMiddle;
+    }
+}

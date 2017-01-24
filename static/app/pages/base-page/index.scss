@@ -1,0 +1,15 @@
+@import '_config';
+.m-page {
+    padding-bottom: $distanceSmall;
+    .page-header {
+        margin-bottom: $distanceSmall;
+        padding: 0 $distanceMiddle;
+        border-bottom: 1px solid $borderColor;
+    }
+    .page-title {
+        font-size: $fontSizePrimary;
+        display: inline-block;
+        line-height: $inputHeight;
+        margin: 0px;
+    }
+}

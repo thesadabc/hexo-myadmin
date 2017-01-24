@@ -1,0 +1,9 @@
+<m-page  class="m-page_edit" title="new page">
+    <div class="page-info">
+        <m-ymle class="meta" ref="meta" :value="pageDetail.meta"></m-ymle>
+    	<button class="publish" @click="submit">publish</button>
+    </div>
+    <div class="page-base">
+        <m-mde classs="content" ref="content" :value="pageDetail.content"></m-mde>
+    </div>
+</m-page >

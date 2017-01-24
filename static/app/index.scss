@@ -1,0 +1,30 @@
+@import '_config';
+.m-root {
+    .m-nav {
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+    $sideBarWidth: 200px;
+    .m-content {
+        position: absolute;
+        top: $navBarHeight;
+        bottom: 0;
+        width: 100%;
+        .m-sidebar {
+            width: $sideBarWidth;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            background: $mainDark;
+        }
+        .m-container {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: $sideBarWidth;
+            right: 0;
+            overflow-y: auto;
+        }
+    }
+}
