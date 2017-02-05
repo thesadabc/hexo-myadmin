@@ -48,10 +48,10 @@ var webpackConfig = {
 gulp.task("console.script", function() {
     return gulp.src(consoleSrc.script)
         .pipe(webpack(webpackConfig))
-        // .pipe(rev())
+        .pipe(rev())
         .pipe(uglify())
-        // .pipe(gulp.dest(consoleDist.root))
-        // .pipe(rev.manifest("rev-manifest-js.json"))
+        .pipe(gulp.dest(consoleDist.root))
+        .pipe(rev.manifest("rev-manifest-js.json"))
         .pipe(gulp.dest(consoleDist.root));
 });
 
@@ -59,10 +59,10 @@ gulp.task("console.style", function() {
     return gulp.src(consoleSrc.style)
         .pipe(sass({ includePaths: [path.resolve(consoleSrc.root)] }))
         .pipe(concat("index.css"))
-        // .pipe(rev())
+        .pipe(rev())
         .pipe(uglifycss())
-        // .pipe(gulp.dest(consoleDist.root))
-        // .pipe(rev.manifest("rev-manifest-css.json"))
+        .pipe(gulp.dest(consoleDist.root))
+        .pipe(rev.manifest("rev-manifest-css.json"))
         .pipe(gulp.dest(consoleDist.root));
 });
 

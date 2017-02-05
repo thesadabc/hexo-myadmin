@@ -2,7 +2,7 @@ module.exports = Vue.extend({
     template: require("./index.html"),
     data: function() {
         return {
-            msg: "加载中...",
+            msg: "Loading...",
         }
     },
     methods: {

@@ -2,8 +2,8 @@ module.exports = Vue.extend({
     template: require("./index.html"),
     data: function() {
         return {
-            title: "提示",
-            content: "提示",
+            title: "Notice",
+            content: "Notice",
         }
     },
     methods: {
