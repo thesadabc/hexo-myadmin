@@ -30,7 +30,7 @@ module.exports = Vue.extend({
                     return {
                         rowItem: post,
                         items: [
-                            post.title, post.categories.join(), post.tags.join(),
+                            post.title, post.categories.join(", "), post.tags.join(", "),
                             Vue.tools.formatTime(post.date), Vue.tools.formatTime(post.updated), status, action
                         ],
                     }
