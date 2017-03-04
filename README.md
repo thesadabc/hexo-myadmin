@@ -16,7 +16,7 @@ a hexo dashboard plugin, for live hexo server.
 
 ```bash
     # install hexo-myadmin
-    hexo i hexo-myadmin --save
+    npm i hexo-myadmin --save
 
     # start server with global hexo-cli
     hexo server
