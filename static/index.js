@@ -30,5 +30,5 @@ axios.interceptors.response.use(function (resp) {
 });
 
 const App = require("./app");
-const app = new App();
+const app = new App(); // happy for eslint no-new
 app.$mount("#app");
