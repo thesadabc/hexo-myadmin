@@ -60,5 +60,5 @@
     "html-loader": "^0.5.5",
     "pre-commit": "^1.2.2"
   },
-  "pre-commit": ["lint-static", "lint-server"]
+  "pre-commit": ["lint"]
 }
