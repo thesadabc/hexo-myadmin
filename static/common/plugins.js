@@ -12,7 +12,6 @@ module.exports = function (Vue, option) {
         },
         created() {
             this.$nextTick(function () {
-                console.log(this);
                 if (this.$options.routerRefresh) { this.$options.routerRefresh.call(this, this.$route); }
             });
         },

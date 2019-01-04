@@ -43,7 +43,7 @@ hexo.extend.filter.register("server_middleware", function (app) {
     app.use(apiRoot, apiRouter(hexo));
 
     app.use(function (err, req, resp, next) {
-        console.log(err);
+        console.error(err);
         if (typeof (err) !== "number") {
             err = err.toString();
         }
