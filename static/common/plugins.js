@@ -5,7 +5,7 @@ const Loading = require("components/dialog/loading");
 module.exports = function (Vue, option) {
     Vue.routeRefreshMixin = {
         "watch": {
-            "$route"(r) {
+            $route(r) {
                 if (this._inactive) return;
                 if (this.$options.routerRefresh) { this.$options.routerRefresh.call(this, this.$route); }
             },

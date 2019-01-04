@@ -7,11 +7,11 @@ module.exports = Vue.extend({
         "m-mde": require("components/editor/markdown"),
         "m-ymle": require("components/editor/yml"),
     },
-    "data"() {
+    data() {
         return {"page": {}};
     },
     "computed": {
-        "pageDetail"() {
+        pageDetail() {
             const page = this.page || {};
             return {
                 "meta": page.meta || "",
@@ -19,7 +19,7 @@ module.exports = Vue.extend({
             };
         },
     },
-    "beforeRouteEnter"(to, from, next) {
+    beforeRouteEnter(to, from, next) {
         if (to.name !== "page-edit") {
             return next(function (vm) {
                 const now = Vue.tools.formatTime(Date.now(), "YYYY-MM-DD HH:mm:ss");
@@ -37,7 +37,7 @@ module.exports = Vue.extend({
         });
     },
     "methods": {
-        "submit"() {
+        submit() {
             const self = this;
             const newPage = {
                 "meta": self.$refs.meta.getValue(),

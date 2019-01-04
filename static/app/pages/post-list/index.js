@@ -7,12 +7,12 @@ module.exports = Vue.extend({
         "m-table": require("components/table"),
     },
     "mixins": [Vue.routeRefreshMixin],
-    "data"() {
+    data() {
         return {"posts": [], "total": 0};
     },
     // render config
     "computed": {
-        "tableConfig"() {
+        tableConfig() {
             return {
                 "header": ["title", "categories", "tags", "date", "updated", "status", "action"],
                 "data": this.posts.map(function (post) {
@@ -39,22 +39,22 @@ module.exports = Vue.extend({
             };
         },
     },
-    "routerRefresh"(route) {
+    routerRefresh(route) {
         this.refresh();
     },
     "methods": {
-        "publish"(post) {
+        publish(post) {
             postService.publish(post._id).then(this.refresh);
         },
-        "unpublish"(post) {
+        unpublish(post) {
             postService.unpublish(post._id).then(this.refresh);
         },
-        "delete"(post) {
+        delete(post) {
             this.$confirm("确认删除？").then(function () {
                 return postService.delete(post._id);
             }).then(this.refresh);
         },
-        "refresh"() {
+        refresh() {
             const self = this;
             postService.list(this.$route.query).then(function (data) {
                 self.posts = data.list;
@@ -62,7 +62,7 @@ module.exports = Vue.extend({
             });
         },
     },
-    "created"() {
+    created() {
         this.$nextTick(function () {
             this.$refs.table.$on("publish", this.publish);
             this.$refs.table.$on("unpublish", this.unpublish);

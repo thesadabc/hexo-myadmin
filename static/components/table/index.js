@@ -11,12 +11,12 @@ module.exports = Vue.extend({
      */
     "props": ["header", "data", "action", "total"],
     "computed": {
-        "page"() {
+        page() {
             return +this.$route.query.page || 1;
         },
     },
     "methods": {
-        "pageHandler"(page) {
+        pageHandler(page) {
             const query = Object.assign({}, this.$route.query, {page});
             this.$router.push({query});
         },

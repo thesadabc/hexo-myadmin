@@ -1,12 +1,12 @@
 module.exports = Vue.extend({
     "template": require("./index.html"),
-    "data"() {
+    data() {
         return {
             "msg": "Loading...",
         };
     },
     "methods": {
-        "start"() {
+        start() {
             this.stack++;
             this.$el.classList.add("in");
             this.$el.style.visibility = "visible";
@@ -15,7 +15,7 @@ module.exports = Vue.extend({
                 this.timeOutHander = null;
             }
         },
-        "stop"() {
+        stop() {
             const self = this;
             this.stack--;
             if (this.stack <= 0) {
@@ -27,7 +27,7 @@ module.exports = Vue.extend({
             }
         },
     },
-    "created"() {
+    created() {
         this.stack = 0;
         document.body.appendChild(this.$mount().$el);
     },

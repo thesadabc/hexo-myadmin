@@ -1,26 +1,26 @@
 module.exports = Vue.extend({
     "template": require("./index.html"),
-    "data"() {
+    data() {
         return {
             "title": "Notice",
             "content": "Notice",
         };
     },
     "methods": {
-        "show"() {
+        show() {
             this.$el.classList.add("in");
         },
 
         // btn click
-        "confirm"() {
+        confirm() {
             this.$emit("confirm", true);
             this.close();
         },
-        "cancel"() {
+        cancel() {
             this.$emit("confirm", false);
             this.close();
         },
-        "close"() {
+        close() {
             this.$emit("close");
             this._hide();
             this.$el.remove();
@@ -28,11 +28,11 @@ module.exports = Vue.extend({
         },
 
         // inner fn
-        "_hide"() {
+        _hide() {
             this.$el.classList.remove("in");
         },
     },
-    "created"() {
+    created() {
         document.body.appendChild(this.$mount().$el);
     },
 });

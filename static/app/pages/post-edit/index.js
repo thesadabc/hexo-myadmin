@@ -7,11 +7,11 @@ module.exports = Vue.extend({
         "m-mde": require("components/editor/markdown"),
         "m-ymle": require("components/editor/yml"),
     },
-    "data"() {
+    data() {
         return {"post": {}};
     },
     "computed": {
-        "postDetail"() {
+        postDetail() {
             const post = this.post || {};
             return {
                 "meta": post.meta || "",
@@ -19,7 +19,7 @@ module.exports = Vue.extend({
             };
         },
     },
-    "beforeRouteEnter"(to, from, next) {
+    beforeRouteEnter(to, from, next) {
         if (to.name !== "post-edit") {
             return next(function (vm) {
                 const now = Vue.tools.formatTime(Date.now(), "YYYY-MM-DD HH:mm:ss");
@@ -37,7 +37,7 @@ module.exports = Vue.extend({
         });
     },
     "methods": {
-        "submit"() {
+        submit() {
             const self = this;
             const newPost = {
                 "meta": self.$refs.meta.getValue(),

@@ -2,18 +2,18 @@ module.exports = Vue.extend({
     "template": require("./index.html"),
     "props": ["value"],
     "methods": {
-        "getValue"() {
+        getValue() {
             return this.mdEditor.value();
         },
     },
-    "updated"() {
+    updated() {
         this.mdEditor.value(this.value);
     },
-    "created"() {
+    created() {
         this.$nextTick(function () {
             const insertMore = {
                 "name": "more",
-                "action"(editor) {
+                action(editor) {
                     const moreTag = "<!--more-->\n";
                     editor.codemirror.replaceSelection(moreTag);
                     editor.codemirror.focus();

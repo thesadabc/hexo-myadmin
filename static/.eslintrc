@@ -9,7 +9,7 @@
         "quotes": ["error", "double", {"avoidEscape": true}],
         "indent": ["error", 4, {"SwitchCase": 1, "VariableDeclarator": 1}],
         "semi": ["error", "always"],
-        "object-shorthand": "error",
+        "object-shorthand": ["error", "always"],
         "quote-props": ["error", "always"],
         "space-before-function-paren": ["error", {"anonymous": "always", "named": "never", "asyncArrow": "always"}],
         "comma-dangle": ["error", "always-multiline"],

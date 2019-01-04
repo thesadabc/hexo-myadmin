@@ -7,12 +7,12 @@ module.exports = Vue.extend({
         "m-table": require("components/table"),
     },
     "mixins": [Vue.routeRefreshMixin],
-    "data"() {
+    data() {
         return {"pages": [], "total": 0};
     },
     // render config
     "computed": {
-        "tableConfig"() {
+        tableConfig() {
             return {
                 "header": ["title", "date", "updated", "action"],
                 "data": this.pages.map(function (page) {
@@ -32,16 +32,16 @@ module.exports = Vue.extend({
             };
         },
     },
-    "routerRefresh"() {
+    routerRefresh() {
         this.refresh();
     },
     "methods": {
-        "delete"(page) {
+        delete(page) {
             this.$confirm("确认删除？").then(function () {
                 return pageService.delete(page._id);
             }).then(this.refresh);
         },
-        "refresh"() {
+        refresh() {
             const self = this;
             pageService.list(this.$route.query).then(function (data) {
                 self.pages = data.list; ;
@@ -49,7 +49,7 @@ module.exports = Vue.extend({
             });
         },
     },
-    "created"() {
+    created() {
         this.$nextTick(function () {
             this.$refs.table.$on("delete", this.delete);
         });
