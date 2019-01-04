@@ -30,4 +30,5 @@ axios.interceptors.response.use(function (resp) {
 });
 
 const App = require("./app");
-App({"el": "#app"});
+const app = new App();
+app.$mount("#app");
