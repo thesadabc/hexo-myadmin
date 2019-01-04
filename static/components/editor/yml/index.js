@@ -1,17 +1,17 @@
 module.exports = Vue.extend({
-    template: require("./index.html"),
-    props: ["value"],
-    methods: {
-        getValue: function() {
+    "template": require("./index.html"),
+    "props": ["value"],
+    "methods": {
+        getValue() {
             return this.mCodeMirror.getValue();
-        }
+        },
     },
-    updated: function() {
+    updated() {
         this.mCodeMirror.setValue(this.value);
     },
-    created: function() {
-        this.$nextTick(function() {
-            this.mCodeMirror = CodeMirror.fromTextArea(this.$refs.editor, { mode: "yaml" });
+    created() {
+        this.$nextTick(function () {
+            this.mCodeMirror = CodeMirror.fromTextArea(this.$refs.editor, {"mode": "yaml"});
         });
-    }
+    },
 });

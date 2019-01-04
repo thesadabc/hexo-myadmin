@@ -1,20 +1,20 @@
 module.exports = {
-    list: function(query) {
-        return axios.get("pages", { params: query });
+    list(query) {
+        return axios.get("pages", {"params": query});
     },
-    detail: function(id) {
+    detail(id) {
         return axios.get("pages/" + id);
     },
-    raw: function(id) {
+    raw(id) {
         return axios.get("pages/" + id + "/raw");
     },
-    update: function(id, post) {
+    update(id, post) {
         return axios.put("pages/" + id, post);
     },
-    create: function(post) {
+    create(post) {
         return axios.post("pages", post);
     },
-    delete: function(id) {
+    delete(id) {
         return axios.delete("pages/" + id);
-    }
-}
+    },
+};

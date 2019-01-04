@@ -1,18 +1,32 @@
 {
   "name": "hexo-myadmin",
   "version": "0.3.3",
-  "main": "lib/index.js",
-  "scripts": {
-    "prepublish": "gulp build",
-    "build": "gulp build",
-    "dev": "gulp dev"
-  },
+  "description": "a hexo dashboard plugin, for live blog server.",
   "keywords": [
     "hexo",
     "admin",
     "dashboard",
     "plugin"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thesadabc/hexo-myadmin.git"
+  },
+  "author": "thesadabc",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thesadabc/hexo-myadmin/issues"
+  },
+  "homepage": "https://github.com/thesadabc/hexo-myadmin#readme",
+  "main": "server/index.js",
+  "scripts": {
+    "prepublish": "gulp build",
+    "build": "gulp build",
+    "dev": "gulp dev",
+    "lint-static": "eslint --ext .html,.js static",
+    "lint-server": "eslint server",
+    "lint": "eslint server && eslint --ext .html,.js static"
+  },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
@@ -27,27 +41,24 @@
   "devDependencies": {
     "browser-sync": "^2.26.3",
     "del": "^3.0.0",
+    "eslint": "^5.11.1",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-html": "^5.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
     "gulp": "^4.0.0",
+    "gulp-butternut": "^1.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-minify-html": "^1.0.6",
     "gulp-rev": "^9.0.0",
     "gulp-rev-collector": "^1.3.1",
     "gulp-sass": "^4.0.2",
-    "gulp-sequence": "^1.0.0",
-    "gulp-uglify": "^3.0.1",
     "gulp-uglifycss": "^1.1.0",
     "gulp-webpack": "^1.5.0",
-    "html-loader": "^0.5.5"
+    "html-loader": "^0.5.5",
+    "pre-commit": "^1.2.2"
   },
-  "description": "a hexo dashboard plugin, for live blog server.",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/thesadabc/hexo-myadmin.git"
-  },
-  "author": "thesadabc",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/thesadabc/hexo-myadmin/issues"
-  },
-  "homepage": "https://github.com/thesadabc/hexo-myadmin#readme"
+  "pre-commit": ["lint-static", "lint-server"]
 }

@@ -1,8 +1,10 @@
-module.exports.send = function(req, resp, next) {
-    resp.send = function(data) {
-        let ret = { msg: "unknow error", code: -1 };
+"use strict";
 
-        switch (typeof(data)) {
+module.exports.send = function (req, resp, next) {
+    resp.send = function (data) {
+        const ret = {"msg": "unknow error", "code": -1};
+
+        switch (typeof (data)) {
             case "string":
                 ret.code = 1;
                 ret.msg = data;
@@ -19,6 +21,6 @@ module.exports.send = function(req, resp, next) {
         }
         resp.setHeader("Content-Type", "application/json");
         resp.end(JSON.stringify(ret));
-    }
+    };
     next();
 };

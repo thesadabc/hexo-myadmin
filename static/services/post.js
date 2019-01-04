@@ -1,26 +1,26 @@
 module.exports = {
-    list: function(query) {
-        return axios.get("posts", { params: query });
+    list(query) {
+        return axios.get("posts", {"params": query});
     },
-    detail: function(id) {
+    detail(id) {
         return axios.get("posts/" + id);
     },
-    raw: function(id) {
+    raw(id) {
         return axios.get("posts/" + id + "/raw");
     },
-    update: function(id, post) {
+    update(id, post) {
         return axios.put("posts/" + id, post);
     },
-    create: function(post) {
+    create(post) {
         return axios.post("posts", post);
     },
-    delete: function(id) {
+    delete(id) {
         return axios.delete("posts/" + id);
     },
-    publish: function(id) {
+    publish(id) {
         return axios.post("posts/" + id + "/publish");
     },
-    unpublish: function(id) {
+    unpublish(id) {
         return axios.post("posts/" + id + "/unpublish");
-    }
-}
+    },
+};

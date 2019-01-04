@@ -1,5 +1,5 @@
 module.exports = Vue.extend({
-    template: require("./index.html"),
+    "template": require("./index.html"),
     /**
      * for table
      * @param header , ["h1", "h2", "h3", "act"]
@@ -7,18 +7,18 @@ module.exports = Vue.extend({
      *
      * for zpagenav
      * @url https://github.com/zxdong262/vue-pagenav
-     * @param total 
+     * @param total
      */
-    props: ["header", "data", "action", "total"],
-    computed: {
-        page: function() {
+    "props": ["header", "data", "action", "total"],
+    "computed": {
+        "page"() {
             return +this.$route.query.page || 1;
-        }
+        },
     },
-    methods: {
-        pageHandler: function(page) {
-            var query = Object.assign({}, this.$route.query, { page: page })
-            this.$router.push({ query: query });
-        }
+    "methods": {
+        "pageHandler"(page) {
+            const query = Object.assign({}, this.$route.query, {page});
+            this.$router.push({query});
+        },
     },
 });

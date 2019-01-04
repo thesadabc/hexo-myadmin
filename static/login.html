@@ -58,29 +58,29 @@
     </div>
 </body>
 <script>
-var iptUname = document.getElementById("username");
-var iptPwd = document.getElementById("password");
+const iptUname = document.getElementById("username");
+const iptPwd = document.getElementById("password");
 
 function post(url, dataJson) {
-    return new Promise(function(resolve, reject) {
-        var xmlHttpReq = new XMLHttpRequest();
+    return new Promise(function (resolve, reject) {
+        const xmlHttpReq = new XMLHttpRequest();
         xmlHttpReq.open("post", url, true);
         xmlHttpReq.setRequestHeader("Content-Type", "application/json");
         xmlHttpReq.onload = function (e) {
-            try{
-                return resolve(JSON.parse(xmlHttpReq.responseText))
-            }catch(e){
-                return reject({code: -1, msg: xmlHttpReq.responseText})
+            try {
+                return resolve(JSON.parse(xmlHttpReq.responseText));
+            } catch (e) {
+                return reject(new Error(xmlHttpReq.responseText));
             }
         };
         xmlHttpReq.onerror = reject;
         xmlHttpReq.send(JSON.stringify(dataJson));
-    })
+    });
 }
 
 function submit() {
-    var username = iptUname.value;
-    var password = iptPwd.value;
+    const username = iptUname.value;
+    const password = iptPwd.value;
     if (!username) {
         return alert("please enter username");
     }
@@ -88,16 +88,16 @@ function submit() {
         return alert("please enter password");
     }
 
-    post("./api/login", {u:username, p:password}).then(function(data) {
+    post("./api/login", {"u": username, "p": password}).then(function (data) {
         if (data.code) return alert(data.msg);
         location.href = "./index.html";
-    },  alert);
+    }, alert);
 }
 
 document.getElementById("submit").addEventListener("click", submit);
-iptPwd.addEventListener("keypress", function(e) {
-    var keyCode = e.keyCode || e.charCode;
-    if (keyCode == 13) submit();
+iptPwd.addEventListener("keypress", function (e) {
+    const keyCode = e.keyCode || e.charCode;
+    if (keyCode === 13) submit();
 });
 iptUname.focus();
 </script>

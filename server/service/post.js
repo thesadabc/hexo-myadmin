@@ -1,16 +1,18 @@
-let util = require('hexo-util');
-let path = require("path");
-let fs = require('hexo-fs');
-let hfm = require('hexo-front-matter');
+"use strict";
+
+const path = require("path");
+const fs = require("hexo-fs");
+const hfm = require("hexo-front-matter");
 
 module.exports = class PostService {
-
     /**
      *  @param  hexo hexo instance
      *  @param  type [Post, Page]
      */
     constructor(hexo, type) {
-        if (type !== "Post" && type !== "Page") throw "Modle Type should be Post or Page!";
+        if (type !== "Post" && type !== "Page") {
+            throw new Error("Modle Type should be Post or Page!");
+        }
         this.hexo = hexo;
         this.type = type;
     }
@@ -20,7 +22,7 @@ module.exports = class PostService {
      *  @return source "_posts/hello.md"
      */
     getSource(fullPath) {
-        return fullPath.slice(this.hexo.source_dir.length).replace(/\\/g, '\/');
+        return fullPath.slice(this.hexo.source_dir.length).replace(/\\/g, "/");
     }
 
     /**
@@ -43,7 +45,7 @@ module.exports = class PostService {
      */
     detail(query) {
         let post = null;
-        if (typeof(query) === "string") {
+        if (typeof (query) === "string") {
             post = this.hexo.model(this.type).findById(query);
         } else {
             post = this.hexo.model(this.type).findOne(query);
@@ -58,7 +60,7 @@ module.exports = class PostService {
      *          -  content
      */
     raw(query) {
-        let post = this.detail(query);
+        const post = this.detail(query);
         if (!post) return null;
         return hfm.split(post.raw);
     }
@@ -69,11 +71,11 @@ module.exports = class PostService {
      *          -  content
      *  @return  Promise newPost source
      */
-    create({ meta, content }) {
-        let compiled = hfm.parse(['---', meta, '---'].join('\n'));
+    create({meta, content}) {
+        const compiled = hfm.parse(["---", meta, "---"].join("\n"));
         delete compiled._content;
 
-        if (!compiled.title) return Promise.reject("title cant be null");
+        if (!compiled.title) return Promise.reject(new Error("title cant be null"));
 
         compiled.updated = compiled.updated || new Date();
         compiled.content = content;
@@ -81,7 +83,7 @@ module.exports = class PostService {
         compiled.layout = this.type.toLowerCase();
 
         if (this.type === "Post") {
-            compiled.categories = compiled.categories || [this.hexo.config.default_category]
+            compiled.categories = compiled.categories || [this.hexo.config.default_category];
         }
         return this.hexo.post.create(compiled)
             .then((file) =>
@@ -96,21 +98,20 @@ module.exports = class PostService {
      *          -  content
      *  @return  Promise newPost source
      */
-    update(id, { meta, content }) {
-        let post = this.detail(id);
+    update(id, {meta, content}) {
+        const post = this.detail(id);
 
-        let compiled = hfm.parse(['---', meta, '---', content].join('\n'));
+        const compiled = hfm.parse(["---", meta, "---", content].join("\n"));
         compiled.updated = compiled.updated || new Date();
         compiled.date = compiled.date || new Date(post.date.valueOf());
         compiled.author = compiled.author || post.author || this.hexo.config.author;
         if (this.type === "Post") {
-            compiled.categories = compiled.categories || [this.hexo.config.default_category]
+            compiled.categories = compiled.categories || [this.hexo.config.default_category];
         }
 
         return fs.writeFile(post.full_source, hfm.stringify(compiled))
             .then(() => this.updateDB())
             .then(() => this.getSource(post.full_source));
-
     }
 
     /**
@@ -118,7 +119,7 @@ module.exports = class PostService {
      *  @return Promise
      */
     delete(id) {
-        let post = this.detail(id);
+        const post = this.detail(id);
         if (this.type === "Page") {
             return fs.rmdir(path.dirname(post.full_source)).then(() => this.updateDB());
         } else if (this.type === "Post") {
@@ -132,9 +133,9 @@ module.exports = class PostService {
      */
     publish(id) {
         if (this.type === "Page") return;
-        let post = this.detail(id);
-        let postDir = path.join(this.hexo.source_dir, '_posts');
-        let newFullSource = path.join(postDir, path.basename(post.full_source));
+        const post = this.detail(id);
+        const postDir = path.join(this.hexo.source_dir, "_posts");
+        const newFullSource = path.join(postDir, path.basename(post.full_source));
 
         return fs.rename(post.full_source, newFullSource).then(() => this.updateDB());
     }
@@ -145,13 +146,13 @@ module.exports = class PostService {
      */
     unpublish(id) {
         if (this.type === "Page") return;
-        let post = this.detail(id);
-        let draftDir = path.join(this.hexo.source_dir, '_drafts');
-        let newFullSource = path.join(draftDir, path.basename(post.full_source));
+        const post = this.detail(id);
+        const draftDir = path.join(this.hexo.source_dir, "_drafts");
+        const newFullSource = path.join(draftDir, path.basename(post.full_source));
 
         return fs.exists(draftDir)
             .then((exists) => exists || fs.mkdir(draftDir))
             .then(() => fs.rename(post.full_source, newFullSource))
             .then(() => this.updateDB());
     }
-}
+};
