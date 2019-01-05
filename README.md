@@ -14,6 +14,8 @@ a hexo dashboard plugin, for live hexo server.
 
 ## USAGE
 
+Node.js >= 8.0.0 required.
+
 ```bash
     # install hexo-myadmin
     hexo i hexo-myadmin --save
@@ -27,6 +29,7 @@ a hexo dashboard plugin, for live hexo server.
     # visit localhost:4000/admin
 
 ```
+
 
 ## Password Protection
 
