@@ -4,4 +4,8 @@ node_modules
 .DS_Store
 static
 test
-.package-lock.json
+
+package-lock.json
+gulpfile.js
+.eslintignore
+.eslintrc
