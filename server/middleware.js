@@ -9,6 +9,7 @@ module.exports.send = function (req, resp, next) {
                 ret.code = 1;
                 ret.msg = data;
                 break;
+            case "undefined":
             case "object":
                 ret.code = 0;
                 ret.msg = "ok";
@@ -23,4 +24,12 @@ module.exports.send = function (req, resp, next) {
         resp.end(JSON.stringify(ret));
     };
     next();
+};
+
+module.exports.errorHandler = function (err, req, resp, next) {
+    console.error(err);
+    if (typeof (err) !== "number") {
+        err = err.toString();
+    }
+    resp.send(err);
 };

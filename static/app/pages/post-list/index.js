@@ -43,23 +43,24 @@ module.exports = Vue.extend({
         this.refresh();
     },
     "methods": {
-        publish(post) {
-            postService.publish(post._id).then(this.refresh);
+        async publish(post) {
+            await postService.publish(post._id);
+            await this.refresh();
         },
-        unpublish(post) {
-            postService.unpublish(post._id).then(this.refresh);
+        async unpublish(post) {
+            await postService.unpublish(post._id);
+            await this.refresh();
         },
-        delete(post) {
-            this.$confirm("确认删除？").then(function () {
-                return postService.delete(post._id);
-            }).then(this.refresh);
+        async delete(post) {
+            const confirm = await this.$confirm("确认删除？");
+            if (!confirm) return;
+            await postService.delete(post._id);
+            await this.refresh();
         },
-        refresh() {
-            const self = this;
-            postService.list(this.$route.query).then(function (data) {
-                self.posts = data.list;
-                self.total = data.total;
-            });
+        async refresh() {
+            const data = await postService.list(this.$route.query);
+            this.posts = data.list;
+            this.total = data.total;
         },
     },
     created() {

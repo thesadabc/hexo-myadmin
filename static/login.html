@@ -61,24 +61,18 @@
 const iptUname = document.getElementById("username");
 const iptPwd = document.getElementById("password");
 
-function post(url, dataJson) {
-    return new Promise(function (resolve, reject) {
-        const xmlHttpReq = new XMLHttpRequest();
-        xmlHttpReq.open("post", url, true);
-        xmlHttpReq.setRequestHeader("Content-Type", "application/json");
-        xmlHttpReq.onload = function (e) {
-            try {
-                return resolve(JSON.parse(xmlHttpReq.responseText));
-            } catch (e) {
-                return reject(new Error(xmlHttpReq.responseText));
-            }
-        };
-        xmlHttpReq.onerror = reject;
-        xmlHttpReq.send(JSON.stringify(dataJson));
+async function post(url, data) {
+    const resp = await fetch(url, {
+        "method": "POST",
+        "mode": "same-origin",
+        "credentials": "same-origin",
+        "headers": {"Content-Type": "application/json"},
+        "body": JSON.stringify(data),
     });
+    return resp.json();
 }
 
-function submit() {
+async function submit() {
     const username = iptUname.value;
     const password = iptPwd.value;
     if (!username) {
@@ -88,10 +82,9 @@ function submit() {
         return alert("please enter password");
     }
 
-    post("./api/login", {"u": username, "p": password}).then(function (data) {
-        if (data.code) return alert(data.msg);
-        location.href = "./index.html";
-    }, alert);
+    const data = await post("./api/login", {"u": username, "p": password});
+    if (data.code) return alert(data.msg);
+    location.href = "./index.html";
 }
 
 document.getElementById("submit").addEventListener("click", submit);

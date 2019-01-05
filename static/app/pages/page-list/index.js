@@ -36,17 +36,16 @@ module.exports = Vue.extend({
         this.refresh();
     },
     "methods": {
-        delete(page) {
-            this.$confirm("确认删除？").then(function () {
-                return pageService.delete(page._id);
-            }).then(this.refresh);
+        async delete(page) {
+            const confirm = await this.$confirm("确认删除？");
+            if (!confirm) return;
+            await pageService.delete(page._id);
+            await this.refresh();
         },
-        refresh() {
-            const self = this;
-            pageService.list(this.$route.query).then(function (data) {
-                self.pages = data.list; ;
-                self.total = data.total;
-            });
+        async refresh() {
+            const data = await pageService.list(this.$route.query);
+            this.pages = data.list;
+            this.total = data.total;
         },
     },
     created() {

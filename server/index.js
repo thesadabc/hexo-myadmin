@@ -4,7 +4,7 @@ const path = require("path");
 const session = require("express-session");
 const serveStatic = require("serve-static");
 const bodyParser = require("body-parser");
-const query = require("connect-query");
+const connectQuery = require("connect-query");
 const apiRouter = require("./router");
 const middleware = require("./middleware");
 
@@ -35,18 +35,12 @@ hexo.extend.filter.register("server_middleware", function (app) {
         }));
     }
     // api router middleware
-    app.use(apiRoot, query());
+    app.use(apiRoot, connectQuery());
     app.use(apiRoot, bodyParser.json({"limit": "50mb"}));
     app.use(apiRoot, middleware.send);
 
     // api router
     app.use(apiRoot, apiRouter(hexo));
 
-    app.use(function (err, req, resp, next) {
-        console.error(err);
-        if (typeof (err) !== "number") {
-            err = err.toString();
-        }
-        resp.send(err);
-    });
+    app.use(middleware.errorHandler);
 });

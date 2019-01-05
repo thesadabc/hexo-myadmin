@@ -1,14 +1,14 @@
 const path = require("path");
 const del = require("del");
 const gulp = require("gulp");
-const minifyHtml = require("gulp-minify-html");
+const minifyHtml = require("gulp-htmlmin");
 const butternut = require("gulp-butternut");
 const rev = require("gulp-rev");
 const revCollector = require("gulp-rev-collector");
 const sass = require("gulp-sass");
 const uglifycss = require("gulp-uglifycss");
 const concat = require("gulp-concat");
-const webpack = require("gulp-webpack");
+const webpack = require("webpack-stream");
 
 // for static resources
 const staticSrc = {
@@ -26,13 +26,14 @@ const staticDist = {
 };
 
 const webpackConfig = {
+    "mode": "none",
     "output": {
         "filename": "index.js",
     },
     "module": {
-        "loaders": [{
+        "rules": [{
             "test": /\.html$/,
-            "loader": "html?attrs=false&minimize=true&conservativeCollapse=false",
+            "loader": "html-loader?attrs=false&minimize=true&conservativeCollapse=false",
         }],
     },
     "resolve": {
@@ -68,7 +69,7 @@ gulp.task("static.style", function () {
 gulp.task("static.html", function () {
     return gulp.src([path.join(staticDist.root, "*.json"), staticSrc.entryhtml])
         .pipe(revCollector())
-        .pipe(minifyHtml())
+        .pipe(minifyHtml({collapseWhitespace: true}))
         .pipe(gulp.dest(staticDist.root));
 });
 

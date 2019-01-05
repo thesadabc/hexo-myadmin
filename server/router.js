@@ -10,9 +10,14 @@ const router = new director.http.Router().configure({"async": true, "recurse": f
 
     router[method] = function (path, ...fns) {
         const fn = fns.pop();
-        return _method(path, [...fns, function (...args) {
+        return _method(path, [...fns, async function (...args) {
             const next = args.pop();
-            fn.apply(this, args).then((d) => this.res.send(d)).catch(next);
+            try {
+                const data = await fn.apply(this, args);
+                this.res.send(data);
+            } catch (e) {
+                next(e);
+            }
         }]);
     };
 });
@@ -24,7 +29,7 @@ function middlewareEmpty(...args) {
 function middlewareLogin(...args) {
     const next = args.pop();
     if (this.req.session && this.req.session.login) return next();
-    return next(401);
+    this.res.send(401);
 }
 
 module.exports = function (hexo) {

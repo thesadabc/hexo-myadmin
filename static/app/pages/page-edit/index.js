@@ -19,39 +19,33 @@ module.exports = Vue.extend({
             };
         },
     },
-    beforeRouteEnter(to, from, next) {
+    async beforeRouteEnter(to, from, next) {
         if (to.name !== "page-edit") {
-            return next(function (vm) {
-                const now = Vue.tools.formatTime(Date.now(), "YYYY-MM-DD HH:mm:ss");
+            const now = Vue.tools.formatTime(Date.now());
+            next((vm) => {
                 vm.page = {
                     "meta": "title: \ndate: " + now + "\nupdated: " + now + "\n",
                     "content": "",
                 };
             });
+        } else {
+            const page = await pageService.raw(to.params.id);
+            next((vm) => { vm.page = page; });
         }
-
-        pageService.raw(to.params.id).then(function (page) {
-            next(function (vm) {
-                vm.page = page;
-            });
-        });
     },
     "methods": {
-        submit() {
-            const self = this;
+        async submit() {
             const newPage = {
-                "meta": self.$refs.meta.getValue(),
-                "content": self.$refs.content.getValue(),
+                "meta": this.$refs.meta.getValue(),
+                "content": this.$refs.content.getValue(),
             };
 
-            if (self.$route.name === "page-edit") {
-                pageService.update(self.$route.params.id, newPage).then(function (p) {
-                    self.$router.push({"name": "page-list"});
-                });
-            } else if (self.$route.name === "page-new") {
-                pageService.create(newPage).then(function () {
-                    self.$router.push({"name": "page-list"});
-                });
+            if (this.$route.name === "page-edit") {
+                await pageService.update(this.$route.params.id, newPage);
+                this.$router.push({"name": "page-list"});
+            } else if (this.$route.name === "page-new") {
+                await pageService.create(newPage);
+                this.$router.push({"name": "page-list"});
             }
         },
     },

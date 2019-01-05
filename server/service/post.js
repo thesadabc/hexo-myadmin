@@ -26,7 +26,7 @@ module.exports = class PostService {
     }
 
     /**
-     *  @return Promise
+     *  @return
      */
     updateDB() {
         return this.hexo.source.process();
@@ -69,13 +69,13 @@ module.exports = class PostService {
      *  @param  newPost
      *          -  meta
      *          -  content
-     *  @return  Promise newPost source
+     *  @return  newPost source
      */
-    create({meta, content}) {
+    async create({meta, content}) {
         const compiled = hfm.parse(["---", meta, "---"].join("\n"));
         delete compiled._content;
 
-        if (!compiled.title) return Promise.reject(new Error("title cant be null"));
+        if (!compiled.title) throw new Error("title cant be null");
 
         compiled.updated = compiled.updated || new Date();
         compiled.content = content;
@@ -85,10 +85,9 @@ module.exports = class PostService {
         if (this.type === "Post") {
             compiled.categories = compiled.categories || [this.hexo.config.default_category];
         }
-        return this.hexo.post.create(compiled)
-            .then((file) =>
-                this.updateDB().then(() => this.getSource(file.path))
-            );
+        const file = await this.hexo.post.create(compiled);
+        await this.updateDB();
+        return this.getSource(file.path);
     }
 
     /**
@@ -96,9 +95,9 @@ module.exports = class PostService {
      *  @param  post
      *          -  meta
      *          -  content
-     *  @return  Promise newPost source
+     *  @return  newPost source
      */
-    update(id, {meta, content}) {
+    async update(id, {meta, content}) {
         const post = this.detail(id);
 
         const compiled = hfm.parse(["---", meta, "---", content].join("\n"));
@@ -109,50 +108,52 @@ module.exports = class PostService {
             compiled.categories = compiled.categories || [this.hexo.config.default_category];
         }
 
-        return fs.writeFile(post.full_source, hfm.stringify(compiled))
-            .then(() => this.updateDB())
-            .then(() => this.getSource(post.full_source));
+        await fs.writeFile(post.full_source, hfm.stringify(compiled));
+        await this.updateDB();
+        return this.getSource(post.full_source);
     }
 
     /**
      *  @param  id
-     *  @return Promise
+     *  @return
      */
-    delete(id) {
+    async delete(id) {
         const post = this.detail(id);
         if (this.type === "Page") {
-            return fs.rmdir(path.dirname(post.full_source)).then(() => this.updateDB());
+            await fs.rmdir(path.dirname(post.full_source));
         } else if (this.type === "Post") {
-            return fs.unlink(post.full_source).then(() => this.updateDB());
+            await fs.unlink(post.full_source);
         }
+        await this.updateDB();
     }
 
     /**
      *  @param  id
-     *  @return Promise
+     *  @return
      */
-    publish(id) {
+    async publish(id) {
         if (this.type === "Page") return;
         const post = this.detail(id);
         const postDir = path.join(this.hexo.source_dir, "_posts");
         const newFullSource = path.join(postDir, path.basename(post.full_source));
 
-        return fs.rename(post.full_source, newFullSource).then(() => this.updateDB());
+        await fs.rename(post.full_source, newFullSource);
+        await this.updateDB();
     }
 
     /**
      *  @param  id
-     *  @return Promise
+     *  @return
      */
-    unpublish(id) {
+    async unpublish(id) {
         if (this.type === "Page") return;
         const post = this.detail(id);
         const draftDir = path.join(this.hexo.source_dir, "_drafts");
         const newFullSource = path.join(draftDir, path.basename(post.full_source));
 
-        return fs.exists(draftDir)
-            .then((exists) => exists || fs.mkdir(draftDir))
-            .then(() => fs.rename(post.full_source, newFullSource))
-            .then(() => this.updateDB());
+        const exists = fs.exists(draftDir);
+        if (!exists) await fs.mkdir(draftDir);
+        await fs.rename(post.full_source, newFullSource);
+        await this.updateDB();
     }
 };

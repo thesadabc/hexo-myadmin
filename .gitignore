@@ -3,4 +3,4 @@ logs
 node_modules
 .DS_Store
 dist
-.package-lock.json
+package-lock.json

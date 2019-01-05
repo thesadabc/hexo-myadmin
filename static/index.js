@@ -1,5 +1,4 @@
 Vue.use(require("common/plugins"));
-
 Vue.use(window.zPagenav);
 
 axios.interceptors.request.use(function (config) {
@@ -17,16 +16,14 @@ axios.interceptors.response.use(function (resp) {
             window.location.href = "./login.html";
             return;
         }
-        return Vue.alert(data.message).then(function () {
-            return Promise.reject(data.message);
-        });
+        Vue.alert(data.msg);
+        throw new Error(data.msg);
     }
     return data.data;
 }, function (error) {
     if (error.config.loadingHandler) error.config.loadingHandler();
-    return Vue.alert(error.toString()).then(function () {
-        return Promise.reject(error);
-    });
+    Vue.alert(error.toString());
+    throw error;
 });
 
 const App = require("./app");

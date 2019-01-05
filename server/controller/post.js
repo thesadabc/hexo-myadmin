@@ -1,7 +1,6 @@
 "use strict";
 
 const PostService = require("../service/post");
-
 function post2Api(post) {
     if (post instanceof Array) return post.map(post2Api);
     const retPost = {
@@ -26,69 +25,65 @@ module.exports = function (hexo, type) {
 
     return {
         list() {
-            let page = +this.req.query.page || 1;
-            page--;
+            const page = (+this.req.query.page || 1) - 1;
             const limit = 15;
             const skip = page * limit;
-            const list = postService.list();
-
-            return Promise.resolve({
-                "list": list.slice(skip, skip + limit).map(post2Api).map((p) => {
+            const list = postService.list().slice(skip, skip + limit)
+                .map(post2Api).map((p) => {
                     delete (p.content);
                     return p;
-                }),
-                "total": list.length,
-            });
+                });
+
+            return {list, "total": list.length};
         },
 
         detail(id) {
             const post = postService.detail(id);
-            if (!post) return Promise.reject(new Error("resource " + id + " not found"));
-            return Promise.resolve(post).then(post2Api);
+            if (!post) throw new Error("resource " + id + " not found");
+            return post2Api(post);
         },
         raw(id) {
             const post = postService.raw(id);
-            if (!post) return Promise.reject(new Error("resource " + id + " not found"));
-            return Promise.resolve(post).then((r) => ({"meta": r.data, "content": r.content}));
+            if (!post) throw new Error("resource " + id + " not found");
+            return {"meta": post.data, "content": post.content};
         },
-        create() {
+        async create() {
             const body = this.req.body;
             const post = {
                 "meta": body.meta,
                 "content": body.content,
             };
-            return postService.create(post).then(
-                (source) => postService.detail({source})
-            ).then(post2Api);
+            const source = await postService.create(post);
+            const postDetail = await postService.detail({source});
+            return post2Api(postDetail);
         },
 
-        update(id) {
+        async update(id) {
             const body = this.req.body;
             const post = {
                 "meta": body.meta,
                 "content": body.content,
             };
 
-            if (!postService.detail(id)) { return Promise.reject(new Error("resource " + id + " not found")); }
+            if (!postService.detail(id)) throw new Error("resource " + id + " not found");
 
-            return postService.update(id, post).then(
-                (source) => postService.detail({source})
-            ).then(post2Api);
+            const source = await postService.update(id, post);
+            const postDetail = await postService.detail({source});
+            return post2Api(postDetail);
         },
 
         delete(id) {
-            if (!postService.detail(id)) { return Promise.reject(new Error("resource " + id + " not found")); }
+            if (!postService.detail(id)) throw new Error("resource " + id + " not found");
             return postService.delete(id);
         },
 
         publish(id) {
-            if (!postService.detail(id)) { return Promise.reject(new Error("resource " + id + " not found")); }
-
+            if (!postService.detail(id)) throw new Error("resource " + id + " not found");
             return postService.publish(id);
         },
 
         unpublish(id) {
-            if (!postService.detail(id)) { return Promise.reject(new Error("resource " + id + " not found")); }
+            if (!postService.detail(id)) throw new Error("resource " + id + " not found");
             return postService.unpublish(id);
         },
 

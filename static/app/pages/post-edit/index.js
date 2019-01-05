@@ -19,39 +19,32 @@ module.exports = Vue.extend({
             };
         },
     },
-    beforeRouteEnter(to, from, next) {
+    async beforeRouteEnter(to, from, next) {
         if (to.name !== "post-edit") {
-            return next(function (vm) {
-                const now = Vue.tools.formatTime(Date.now(), "YYYY-MM-DD HH:mm:ss");
+            const now = Vue.tools.formatTime(Date.now());
+            next((vm) => {
                 vm.post = {
                     "meta": "title: \ncategories:\ntags:\ndate: " + now + "\nupdated: " + now + "\n",
                     "content": "",
                 };
             });
+        } else {
+            const post = await postService.raw(to.params.id);
+            next((vm) => { vm.post = post; });
         }
-
-        postService.raw(to.params.id).then(function (post) {
-            next(function (vm) {
-                vm.post = post;
-            });
-        });
     },
     "methods": {
-        submit() {
-            const self = this;
+        async submit() {
             const newPost = {
-                "meta": self.$refs.meta.getValue(),
-                "content": self.$refs.content.getValue(),
+                "meta": this.$refs.meta.getValue(),
+                "content": this.$refs.content.getValue(),
             };
-
-            if (self.$route.name === "post-edit") {
-                postService.update(self.$route.params.id, newPost).then(function (p) {
-                    self.$router.push({"name": "post-list"});
-                });
-            } else if (self.$route.name === "post-new") {
-                postService.create(newPost).then(function () {
-                    self.$router.push({"name": "post-list"});
-                });
+            if (this.$route.name === "post-edit") {
+                await postService.update(this.$route.params.id, newPost);
+                this.$router.push({"name": "post-list"});
+            } else if (this.$route.name === "post-new") {
+                await postService.create(newPost);
+                this.$router.push({"name": "post-list"});
             }
         },
     },
