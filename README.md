@@ -18,7 +18,7 @@ Node.js >= 8.0.0 required.
 
 ```bash
     # install hexo-myadmin
-    hexo i hexo-myadmin --save
+    npm i hexo-myadmin --save
 
     # start server with global hexo-cli
     hexo server
