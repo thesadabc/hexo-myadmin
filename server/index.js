@@ -42,5 +42,5 @@ hexo.extend.filter.register("server_middleware", function (app) {
     // api router
     app.use(apiRoot, apiRouter(hexo));
 
-    app.use(middleware.errorHandler);
+    app.use(apiRoot, middleware.errorHandler);
 });

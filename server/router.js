@@ -1,39 +1,41 @@
 "use strict";
 
 const director = require("director");
+const middleware = require("./middleware");
 const postControllerFac = require("./controller/post");
 const authControllerFac = require("./controller/auth");
 const router = new director.http.Router().configure({"async": true, "recurse": false, "strict": false});
 
-["get", "post", "put", "delete"].map(function (method) {
-    const _method = router[method].bind(router);
+function wrapMidfn(midfn) {
+    return function (...args) {
+        const nextfn = args.pop();
+        return midfn(this.req, this.res, nextfn);
+    };
+}
 
+function wrapCtrfn(ctrfn) {
+    return async function (...args) {
+        const nextfn = args.pop();
+        try {
+            const data = await ctrfn.apply(this, args);
+            this.res.send(data);
+        } catch (e) {
+            nextfn(e);
+        }
+    };
+}
+
+["get", "post", "put", "delete"].forEach(function (method) {
+    const _method = router[method].bind(router);
     router[method] = function (path, ...fns) {
-        const fn = fns.pop();
-        return _method(path, [...fns, async function (...args) {
-            const next = args.pop();
-            try {
-                const data = await fn.apply(this, args);
-                this.res.send(data);
-            } catch (e) {
-                next(e);
-            }
-        }]);
+        const ctrfn = wrapCtrfn(fns.pop());
+        const midfns = fns.map(wrapMidfn);
+        return _method(path, [...midfns, ctrfn]);
     };
 });
 
-function middlewareEmpty(...args) {
-    args[args.length - 1]();
-}
-
-function middlewareLogin(...args) {
-    const next = args.pop();
-    if (this.req.session && this.req.session.login) return next();
-    this.res.send(401);
-}
-
 module.exports = function (hexo) {
-    const loginRequire = hexo.config.admin ? middlewareLogin : middlewareEmpty;
+    const loginRequire = hexo.config.admin ? middleware.auth : middleware.noop;
 
     const postController = postControllerFac(hexo, "Post");
     router.get("/posts", loginRequire, postController.list);

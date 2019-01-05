@@ -26,6 +26,15 @@ module.exports.send = function (req, resp, next) {
     next();
 };
 
+module.exports.noop = function (req, resp, next) {
+    next();
+};
+
+module.exports.auth = function (req, resp, next) {
+    if (req.session && req.session.login) return next();
+    resp.send(401);
+};
+
 module.exports.errorHandler = function (err, req, resp, next) {
     console.error(err);
     if (typeof (err) !== "number") {
