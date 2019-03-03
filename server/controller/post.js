@@ -28,13 +28,14 @@ module.exports = function (hexo, type) {
             const page = (+this.req.query.page || 1) - 1;
             const limit = 15;
             const skip = page * limit;
-            const list = postService.list().slice(skip, skip + limit)
+            const postList = postService.list();
+            const list = postList.slice(skip, skip + limit)
                 .map(post2Api).map((p) => {
                     delete (p.content);
                     return p;
                 });
 
-            return {list, "total": list.length};
+            return {list, "total": postList.length};
         },
 
         detail(id) {
