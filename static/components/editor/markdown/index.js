@@ -26,7 +26,7 @@ module.exports = Vue.extend({
                 "indentWithTabs": false,
                 "tabSize": 4,
                 "spellChecker": false,
-                "toolbar": ["bold", "italic", "strikethrough", "heading", "|", "quote", "unordered-list", "ordered-list", "|", "code", "table", "link", "image", "horizontal-rule", insertMore, "|", "fullscreen"],
+                "toolbar": ["bold", "italic", "strikethrough", "heading", "|", "quote", "unordered-list", "ordered-list", "|", "code", "table", "link", "image", "horizontal-rule", insertMore, "|", "fullscreen", "|", "preview"],
                 "autoDownloadFontAwesome": false,
             });
         });
