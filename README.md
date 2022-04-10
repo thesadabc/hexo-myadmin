@@ -2,7 +2,6 @@
 
 a hexo dashboard plugin, for live hexo server.
 
-
 ## Screenshots
 
 ![posts view](doc/post.jpeg?raw=true)
@@ -14,7 +13,7 @@ a hexo dashboard plugin, for live hexo server.
 
 ## USAGE
 
-Node.js >= 8.0.0 required.
+Node.js >= 12.0.0 required.
 
 ```bash
     # install hexo-myadmin

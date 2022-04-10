@@ -42,10 +42,10 @@ $titleHeight: 60px;
         .close {
             float: right;
             cursor: pointer;
-            line-height: $titleHeight / 2;
-            width: $titleHeight / 2;
-            height: $titleHeight / 2;
-            margin-top: $titleHeight / 4;
+            line-height: calc($titleHeight / 2);
+            width: calc($titleHeight / 2);
+            height: calc($titleHeight / 2);
+            margin-top: calc($titleHeight / 4);
             text-align: center;
             color: $fontColorGray;
             font-size: $fontSizeLarge;

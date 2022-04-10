@@ -5,7 +5,7 @@ const minifyHtml = require("gulp-htmlmin");
 const butternut = require("gulp-butternut");
 const rev = require("gulp-rev");
 const revCollector = require("gulp-rev-collector");
-const sass = require("gulp-sass");
+const sass = require("gulp-sass")(require("sass"));
 const uglifycss = require("gulp-uglifycss");
 const concat = require("gulp-concat");
 const webpack = require("webpack-stream");
@@ -33,7 +33,13 @@ const webpackConfig = {
     "module": {
         "rules": [{
             "test": /\.html$/,
-            "loader": "html-loader?attrs=false&minimize=true&conservativeCollapse=false",
+            "loader": "html-loader",
+            "options":{
+                "minimize": {
+                    "conservativeCollapse": false
+                },
+                "esModule": false
+            }
         }],
     },
     "resolve": {
