@@ -1,6 +1,6 @@
 "use strict";
 
-const bcrypt = require("bcrypt-nodejs");
+const bcrypt = require("bcryptjs");
 module.exports = function (hexo) {
     return {
         login() {
