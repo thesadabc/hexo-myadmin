@@ -4,7 +4,7 @@ Vue.use(window.zPagenav);
 axios.interceptors.request.use(function (config) {
     if (config.url.slice(-1) !== "/") config.url += "/";
     config.loadingHandler = Vue.loading();
-    config.url = "/admin/api/" + config.url;
+    config.url = "api/" + config.url;
     return config;
 });
 
