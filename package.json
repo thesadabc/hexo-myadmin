@@ -1,6 +1,6 @@
 {
   "name": "hexo-myadmin",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "a hexo dashboard plugin, for live blog server.",
   "keywords": [
     "hexo",
