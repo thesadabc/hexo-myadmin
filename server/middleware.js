@@ -33,10 +33,7 @@ module.exports.auth = function (req, resp, next) {
     resp.send(401);
 };
 
-module.exports.errorHandler = function (err, req, resp, next) {
-    console.error(err);
-    if (typeof (err) !== "number") {
-        err = err.toString();
-    }
-    resp.send(err);
+module.exports.errorHandler = function (err, req, resp) {
+    console.error("Global ErrorHandler ", err);
+    resp.send(err.toString());
 };

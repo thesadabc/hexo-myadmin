@@ -1,3 +1,3 @@
 <template>
-    <h1>error 404</h1>
+  <el-empty description="Error 404, Page Not Found" />
 </template>

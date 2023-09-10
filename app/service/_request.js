@@ -1,5 +1,4 @@
 import {ElMessage} from "element-plus";
-import router from "@/router";
 import axios from "axios";
 
 axios.defaults.headers["Content-Type"] = "application/json";
@@ -22,7 +21,7 @@ service.interceptors.response.use(
         ElMessage.error(msg);
 
         if (code === 401) {
-            router.replace({"path": "/login"});
+            location.href = "./login.html";
             throw new Error("无效的会话，或者会话已过期，请重新登录。");
         }
         return res.data;

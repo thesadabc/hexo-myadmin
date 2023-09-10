@@ -4,32 +4,28 @@ const routes = [
     {
         "path": "/",
         "name": "home",
-        "redirect": { "name": 'postList' } 
-        // "component": () => import("./pages/HomePage.vue"),
+        "redirect": {"name": "postList"}, 
     },
     {
         "path": "/post",
         "name": "postList",
-        "component": () => import("./pages/ArticleListPage.vue"),
+        "component": () => import("./pages/PostListPage.vue"),
     },
     {
-        "path": "/page",
-        "name": "pageList",
-        "component": () => import("./pages/ArticleListPage.vue"),
+        "path": "/post/add",
+        "name": "postAdd",
+        "component": () => import("./pages/PostAddPage.vue"),
     },
     {
-        "path": "/post/:articleId",
+        "path": "/post/:postId",
         "name": "postDetail",
-        "component": () => import("./pages/ArticleDetailPage.vue"),
+        "component": () => import("./pages/PostDetailPage.vue"),
         "props": true,
     },
     {
-        "path": "/page/:articleId",
-        "name": "pageDetail",
-        "component": () => import("./pages/ArticleDetailPage.vue"),
-        "props": true,
+        "path": "/:pathMatch(.*)*",
+        "component": () => import("./pages/ErrorPage.vue"),
     },
-    {"path": "/*", "component": () => import("./pages/ErrorPage.vue")},
 ];
 
 const router = createRouter({"history": createWebHashHistory(), routes});

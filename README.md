@@ -2,14 +2,6 @@
 
 a hexo dashboard plugin, for live hexo server.
 
-## Screenshots
-
-![posts view](doc/post.jpeg?raw=true)
-
-![editor view](doc/edit.jpeg?raw=true)
-
-![login view](doc/login.jpeg?raw=true)
-
 
 ## USAGE
 

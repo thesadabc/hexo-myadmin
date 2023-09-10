@@ -1,3 +1,4 @@
+/* global hexo */
 "use strict";
 
 const path = require("path");
@@ -20,6 +21,7 @@ if (hexo.config.admin) {
         throw new Error("admin secret config error");
     }
 }
+
 
 hexo.extend.filter.register("server_middleware", function (app) {
     const adminRoot = hexo.config.root + "admin";

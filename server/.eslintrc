@@ -1,0 +1,28 @@
+{
+  "root": true,
+  "env": {
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "es6": true,
+    "ecmaVersion": 13
+  },
+  rules: {
+    "arrow-parens": 0,
+    "generator-star-spacing": 0,
+    "quotes": ["error", "double", {"avoidEscape": true}],
+    "indent": ["error", 4, {"SwitchCase": 1, "VariableDeclarator": 1}],
+    "semi": ["error", "always"],
+    "object-shorthand": ["error", "always"],
+    "quote-props": ["error", "always"],
+    "space-before-function-paren": ["error", {"anonymous": "always", "named": "never", "asyncArrow": "always"}],
+    "comma-dangle": ["error", "always-multiline"],
+    "object-curly-spacing": ["error", "never"],
+    "no-var": "error",
+    "prefer-const": "error",
+    "array-bracket-spacing": ["error", "never"]
+  }
+}

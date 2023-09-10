@@ -14,5 +14,6 @@ module.exports = {
             throw new Error("login error");
 
         this.req.session.login = true;
+        this.res.send();
     },
 };
