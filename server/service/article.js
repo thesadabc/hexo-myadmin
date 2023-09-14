@@ -15,6 +15,7 @@ module.exports = class ArticleService {
         }
         this.hexo = hexo;
         this.type = type;
+        this.model = this.hexo.model(this.type);
     }
 
     /**
@@ -26,50 +27,41 @@ module.exports = class ArticleService {
     }
 
     /**
-     *  @return
-     */
-    updateDB() {
-        return this.hexo.source.process();
-    }
-
-    /**
-     *  @return post array
+     *  @return doc array
      */
     list() {
-        return this.hexo.model(this.type).sort("date", -1).toArray();
+        return this.model.sort("date", -1).toArray();
     }
 
     /**
-     *  @param  postId or query
-     *  @return post detail
+     *  @param  docId or query
+     *  @return doc detail
      */
     detail(query) {
-        let post = null;
         if (typeof (query) === "string") {
-            post = this.hexo.model(this.type).findById(query);
+            return this.model.findById(query);
         } else {
-            post = this.hexo.model(this.type).findOne(query);
+            return this.model.findOne(query);
         }
-        return post;
     }
 
     /**
-     *  @param  postId or query
-     *  @return post raw
+     *  @param  docId or query
+     *  @return doc raw
      *          -  data
      *          -  content
      */
     raw(query) {
-        const post = this.detail(query);
-        if (!post) return null;
-        return hfm.split(post.raw);
+        const doc = this.detail(query);
+        if (!doc) return null;
+        return hfm.split(doc.raw);
     }
 
     /**
-     *  @param  newPost
+     *  @param  newDoc
      *          -  meta
      *          -  content
-     *  @return  newPost source
+     *  @return  newDoc
      */
     async create({meta, content}) {
         const compiled = hfm.parse(["---", meta, "---"].join("\n"));
@@ -86,31 +78,31 @@ module.exports = class ArticleService {
             compiled.categories = compiled.categories || [this.hexo.config.default_category];
         }
         const file = await this.hexo.post.create(compiled);
-        await this.updateDB();
-        return this.getSource(file.path);
+        await this.hexo.source.process();
+        return this.detail({"source": this.getSource(file.path)});
     }
 
     /**
      *  @param  id
-     *  @param  post
+     *  @param  doc
      *          -  meta
      *          -  content
-     *  @return  newPost source
+     *  @return  newDoc
      */
     async update(id, {meta, content}) {
-        const post = this.detail(id);
+        const doc = this.detail(id);
 
         const compiled = hfm.parse(["---", meta, "---", content].join("\n"));
         compiled.updated = compiled.updated || new Date();
-        compiled.date = compiled.date || new Date(post.date.valueOf());
-        compiled.author = compiled.author || post.author || this.hexo.config.author;
+        compiled.date = compiled.date || new Date(doc.date.valueOf());
+        compiled.author = compiled.author || doc.author || this.hexo.config.author;
         if (this.type === "Post") {
             compiled.categories = compiled.categories || [this.hexo.config.default_category];
         }
 
-        await fs.writeFile(post.full_source, hfm.stringify(compiled));
-        await this.updateDB();
-        return this.getSource(post.full_source);
+        await fs.writeFile(doc.full_source, hfm.stringify(compiled));
+        await this.hexo.source.process();
+        return this.detail({"source": this.getSource(doc.full_source)});
     }
 
     /**
@@ -118,42 +110,44 @@ module.exports = class ArticleService {
      *  @return
      */
     async delete(id) {
-        const post = this.detail(id);
+        const doc = this.detail(id);
         if (this.type === "Page") {
-            await fs.rmdir(path.dirname(post.full_source));
+            await fs.rmdir(path.dirname(doc.full_source));
         } else if (this.type === "Post") {
-            await fs.unlink(post.full_source);
+            await fs.unlink(doc.full_source);
         }
-        await this.updateDB();
+        await this.hexo.source.process();
     }
 
     /**
      *  @param  id
-     *  @return
+     *  @return newDoc
      */
     async publish(id) {
         if (this.type === "Page") return;
-        const post = this.detail(id);
+        const doc = this.detail(id);
         const postDir = path.join(this.hexo.source_dir, "_posts");
-        const newFullSource = path.join(postDir, path.basename(post.full_source));
+        const source = path.join(postDir, path.basename(doc.full_source));
 
-        await fs.rename(post.full_source, newFullSource);
-        await this.updateDB();
+        await fs.rename(doc.full_source, source);
+        await this.hexo.source.process();
+        return this.detail({"source": this.getSource(source)});
     }
 
     /**
      *  @param  id
-     *  @return
+     *  @return newDoc
      */
     async unpublish(id) {
         if (this.type === "Page") return;
-        const post = this.detail(id);
+        const doc = this.detail(id);
         const draftDir = path.join(this.hexo.source_dir, "_drafts");
-        const newFullSource = path.join(draftDir, path.basename(post.full_source));
+        const source = path.join(draftDir, path.basename(doc.full_source));
 
         const exists = fs.exists(draftDir);
         if (!exists) await fs.mkdir(draftDir);
-        await fs.rename(post.full_source, newFullSource);
-        await this.updateDB();
+        await fs.rename(doc.full_source, source);
+        await this.hexo.source.process();
+        return this.detail({"source": this.getSource(source)});
     }
 };

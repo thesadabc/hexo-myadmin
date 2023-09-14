@@ -22,20 +22,11 @@ service.interceptors.response.use(
 
         if (code === 401) {
             location.href = "./login.html";
-            throw new Error("无效的会话，或者会话已过期，请重新登录。");
+            throw new Error("Illegal login");
         }
         return res.data;
     }, ({message}) => {
-
-        if (message == "Network Error") {
-            ElMessage.error("网络错误，请检查网络后重试");
-        } else if (message.includes("timeout")) {
-            ElMessage.error("系统接口请求超时");
-        } else if (message.includes("Request failed with status code")) {
-            ElMessage.error("系统接口" + message.substr(message.length - 3) + "异常");
-        } else {
-            ElMessage.error(message);
-        }
+        ElMessage.error(message);
         return {"code": -1};
     },
 );

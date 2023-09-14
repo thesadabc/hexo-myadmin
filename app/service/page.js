@@ -16,7 +16,7 @@ export default {
     create(post) {
         return request.post("page", post);
     },
-    delete(id) {
+    remove(id) {
         return request.delete(`page/${id}`);
     },
 };

@@ -4,22 +4,38 @@ const routes = [
     {
         "path": "/",
         "name": "home",
-        "redirect": {"name": "postList"}, 
+        "redirect": {"name": "PostList"}, 
     },
     {
         "path": "/post",
-        "name": "postList",
+        "name": "PostList",
         "component": () => import("./pages/PostListPage.vue"),
     },
     {
         "path": "/post/add",
-        "name": "postAdd",
+        "name": "PostAdd",
         "component": () => import("./pages/PostAddPage.vue"),
     },
     {
         "path": "/post/:postId",
-        "name": "postDetail",
+        "name": "PostDetail",
         "component": () => import("./pages/PostDetailPage.vue"),
+        "props": true,
+    },
+    {
+        "path": "/page",
+        "name": "PageList",
+        "component": () => import("./pages/PageListPage.vue"),
+    },
+    {
+        "path": "/page/add",
+        "name": "PageAdd",
+        "component": () => import("./pages/PageAddPage.vue"),
+    },
+    {
+        "path": "/page/:pageId",
+        "name": "PageDetail",
+        "component": () => import("./pages/PageDetailPage.vue"),
         "props": true,
     },
     {

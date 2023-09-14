@@ -19,6 +19,17 @@
             AddPost
           </el-menu-item>
         </el-sub-menu>
+        <el-sub-menu index="Pages">
+          <template #title>
+            Pages
+          </template>
+          <el-menu-item :index="menus.PageList.path">
+            PageList
+          </el-menu-item>
+          <el-menu-item :index="menus.AddPage.path">
+            AddPage
+          </el-menu-item>
+        </el-sub-menu>
         <div class="flex-grow" />
         <a
           href="../"
@@ -37,9 +48,12 @@ import {useRouter, useRoute} from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
+const routes = router.getRoutes();
 const menus = {
-    "PostList": router.getRoutes().find(r => r.name === "postList"),
-    "AddPost": router.getRoutes().find(r => r.name === "postAdd"),
+    "PostList": routes.find(r => r.name === "PostList"),
+    "AddPost": routes.find(r => r.name === "PostAdd"),
+    "PageList": routes.find(r => r.name === "PageList"),
+    "AddPage": routes.find(r => r.name === "PageAdd"),
 };
 </script>
 

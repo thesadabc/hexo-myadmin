@@ -33,7 +33,8 @@ module.exports.auth = function (req, resp, next) {
     resp.send(401);
 };
 
-module.exports.errorHandler = function (err, req, resp) {
+module.exports.errorHandler = function (err, req, resp, next) {
     console.error("Global ErrorHandler ", err);
     resp.send(err.toString());
+    next();
 };

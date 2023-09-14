@@ -45,8 +45,7 @@ module.exports = {
     },
     async create(type) {
         const {meta, content} = this.req.body;
-        const source = await this.service[type].create({meta, content});
-        const article = await this.service[type].detail({source});
+        const article = await this.service[type].create({meta, content});
         this.res.send(articleMapping(article));
     },
 
@@ -55,28 +54,28 @@ module.exports = {
         if (!this.service[type].detail(id))
             throw new Error("resource " + id + " not found");
 
-        const source = await this.service[type].update(id, {meta, content});
-        const article = await this.service[type].detail({source});
+        const article = await this.service[type].update(id, {meta, content});
         this.res.send(articleMapping(article));
     },
 
-    delete(type, id) {
+    async delete(type, id) {
         if (!this.service[type].detail(id))
             throw new Error("resource " + id + " not found");
-        this.res.send(this.service[type].delete(id));
+        await this.service[type].delete(id);
+        this.res.send();
     },
 
     async publishPost(id) {
         if (!this.service.post.detail(id))
             throw new Error("resource " + id + " not found");
-        await this.service.post.publish(id);
-        this.res.send();
+        const {_id} = await this.service.post.publish(id);
+        this.res.send({_id});
     },
 
     async unpublishPost(id) {
         if (!this.service.post.detail(id))
             throw new Error("resource " + id + " not found");
-        await this.service.post.unpublish(id);
-        this.res.send();
+        const {_id} = await this.service.post.unpublish(id);
+        this.res.send({_id});
     },
 };

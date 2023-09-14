@@ -1,7 +1,7 @@
 <template>
   <article-detail
-    article-type="post"
-    :article-id="route.params.postId"
+    article-type="page"
+    :article-id="route.params.pageId"
   />
 </template>
 

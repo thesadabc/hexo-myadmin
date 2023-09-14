@@ -19,10 +19,10 @@ export default {
     remove(id) {
         return request.delete(`post/${id}`);
     },
-    publishPost(id) {
+    publish(id) {
         return request.post(`post/${id}/publish`);
     },
-    unPublishPost(id) {
+    unpublish(id) {
         return request.post(`post/${id}/unpublish`);
     },
 };
