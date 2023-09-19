@@ -1,20 +1,22 @@
 "use strict";
 
-function articleMapping(article) {
+function articleMapping(article, isDetail = true) {
     if (article instanceof Array) return article.map(articleMapping);
     const retPost = {
         "_id": article._id,
         "title": article.title,
-        "content": article._content,
         "date": article.date.valueOf(),
         "updated": article.updated.valueOf(),
         "link": article.permalink,
         "isDraft": article.source.includes("_draft"),
     };
+    if (isDetail) {
+        retPost["content"] = article._content;
+    }
 
     if (article.layout === "post") {
-        retPost.tags = article.tags.toArray().map(t => t.name);
-        retPost.categories = article.categories.toArray().map(t => t.name);
+        retPost.tags = article.tags.map(t => t.name);
+        retPost.categories = article.categories.map(t => t.name);
     }
     return retPost;
 }
@@ -22,14 +24,12 @@ function articleMapping(article) {
 module.exports = {
     list(type) {
         const page = (+this.req.query.page || 1) - 1;
-        const limit = 15;
-        const skip = page * limit;
-        const postList = this.service[type].list();
-        const list = postList.slice(skip, skip + limit)
-            .map(articleMapping).map((p) => {
-                delete (p.content);
-                return p;
-            });
+        const title = this.req.query.title?.trim();
+        const category = this.req.query.category?.trim();
+        const tag = this.req.query.tag?.trim();
+
+        const postList = this.service[type].list({category, title, tag}, page);
+        const list = postList.map(p => articleMapping(p, false));
         this.res.send({list, "total": postList.length});
     },
 

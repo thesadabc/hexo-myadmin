@@ -1,6 +1,6 @@
 import {fileURLToPath, URL} from "node:url";
-
 import {defineConfig} from "vite";
+import {resolve} from "node:path";
 import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
@@ -15,6 +15,16 @@ export default defineConfig({
             },
         },
     },
+    "build": {
+        "outDir": "../dist",
+        "rollupOptions": {
+            "input": {
+                "main": resolve(__dirname, "./index.html"),
+                "login": resolve(__dirname, "./login.html"),
+            },
+        },
+    },
+
     "resolve": {
         "alias": {
             "@": fileURLToPath(new URL("./", import.meta.url)),

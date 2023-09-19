@@ -29,8 +29,15 @@ module.exports = class ArticleService {
     /**
      *  @return doc array
      */
-    list() {
-        return this.model.sort("date", -1).toArray();
+    list({category, title, tag}, page = 0, pageSize = 15) {
+        return this.model.filter(i => 
+            (!category || i.categories.some(c => c.name === category)) &&
+                (!tag || i.tags.some(c => c.name === tag)) &&
+                (!title || i.title.includes(title)),
+        )
+            .sort("date", -1)
+            .skip(page * pageSize)
+            .limit(pageSize);
     }
 
     /**
@@ -127,11 +134,12 @@ module.exports = class ArticleService {
         if (this.type === "Page") return;
         const doc = this.detail(id);
         const postDir = path.join(this.hexo.source_dir, "_posts");
-        const source = path.join(postDir, path.basename(doc.full_source));
+        const fullSource = path.join(postDir, path.basename(doc.full_source));
 
-        await fs.rename(doc.full_source, source);
+        await fs.rename(doc.full_source, fullSource);
         await this.hexo.source.process();
-        return this.detail({"source": this.getSource(source)});
+        const source = this.getSource(fullSource);
+        return this.detail({source});
     }
 
     /**
@@ -142,12 +150,14 @@ module.exports = class ArticleService {
         if (this.type === "Page") return;
         const doc = this.detail(id);
         const draftDir = path.join(this.hexo.source_dir, "_drafts");
-        const source = path.join(draftDir, path.basename(doc.full_source));
+        const fullSource = path.join(draftDir, path.basename(doc.full_source));
 
         const exists = fs.exists(draftDir);
         if (!exists) await fs.mkdir(draftDir);
-        await fs.rename(doc.full_source, source);
+        await fs.rename(doc.full_source, fullSource);
+
+        const source = this.getSource(fullSource);
         await this.hexo.source.process();
-        return this.detail({"source": this.getSource(source)});
+        return this.detail({source});
     }
 };

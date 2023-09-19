@@ -53,3 +53,4 @@ hexo.extend.filter.register("server_middleware", function (app) {
     // error handler
     app.use(apiRoot, middleware.errorHandler);
 });
+

@@ -1,98 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <style>
-    html,
-    body {
-        padding: 0;
-        margin: 0;
-        height: 100%;
-        background-color: #f6f6f6;
-    }
-    
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    input {
-        padding: 0 15px;
-        line-height: 2em;
-        font-size: 1.2em;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        display: block;
-        margin: 15px 0;
-    }
-    
-    button {
-        font-size: 1em;
-        font-weight: bold;
-        display: block;
-        width: 100%;
-        margin: 15px 0;
-        padding: 0 15px;
-        line-height: 2.5em;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        background-color: #444;
-        color: #fff;
-        cursor: pointer;
-    }
-    
-    button:hover {
-        background-color: #666;
-    }
-    </style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>hexo-myadmin</title>
+    <script type="module" src="login.js"></script>
 </head>
-
 <body>
-    <div>
-        <input type="text" id="username" placeholder="username">
-        <input type="password" id="password" placeholder="password">
-        <button id="submit">LOGIN</button>
-    </div>
 </body>
-<script>
-const iptUname = document.getElementById("username");
-const iptPwd = document.getElementById("password");
-
-async function post(url, data) {
-    const resp = await fetch(url, {
-        "method": "POST",
-        "mode": "same-origin",
-        "credentials": "same-origin",
-        "headers": {"Content-Type": "application/json"},
-        "body": JSON.stringify(data),
-    });
-    return resp.json();
-}
-
-async function submit() {
-    const username = iptUname.value;
-    const password = iptPwd.value;
-    if (!username) {
-        return alert("please enter username");
-    }
-    if (!password) {
-        return alert("please enter password");
-    }
-
-    const data = await post("./api/login", {"u": username, "p": password});
-    if (data.code) return alert(data.msg);
-    location.href = "./index.html";
-}
-
-document.getElementById("submit").addEventListener("click", submit);
-iptPwd.addEventListener("keypress", function (e) {
-    const keyCode = e.keyCode || e.charCode;
-    if (keyCode === 13) submit();
-});
-iptUname.focus();
-</script>
-
 </html>
