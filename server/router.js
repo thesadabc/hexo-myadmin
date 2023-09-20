@@ -20,7 +20,6 @@ methods.forEach((m) => {
             const nextFn = args[args.length - 1];
             try{
                 await asyncHandler.apply(this, params);
-                nextFn();
             } catch(e) {
                 nextFn(e);
             }
