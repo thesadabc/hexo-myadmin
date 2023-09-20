@@ -2,6 +2,7 @@
 
 a hexo dashboard plugin, for live hexo server.
 
+![example](./example.gif)
 
 ## USAGE
 

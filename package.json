@@ -6,7 +6,9 @@
     "hexo",
     "admin",
     "dashboard",
-    "plugin"
+    "plugin",
+    "vue3",
+    "element-plus"
   ],
   "repository": {
     "type": "git",
