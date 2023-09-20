@@ -4,7 +4,7 @@ const routes = [
     {
         "path": "/",
         "name": "home",
-        "redirect": {"name": "PostList"}, 
+        "redirect": {"name": "PostList"},
     },
     {
         "path": "/post",

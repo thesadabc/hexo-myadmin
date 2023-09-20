@@ -1,5 +1,8 @@
 <template>
-  <article-list article-type="post" />
+  <article-list
+    article-type="post"
+    filter
+  />
 </template>
 
 <script setup>

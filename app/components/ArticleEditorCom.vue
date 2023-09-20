@@ -1,6 +1,6 @@
 <template>
   <el-container
-    class="page" 
+    class="page"
     @keydown.ctrl.s.prevent.stop="handleSave"
     @keydown.meta.s.prevent.stop="handleSave"
   >
@@ -36,13 +36,10 @@ import {yamlExtensions, markdownExtensions} from "../helper/codemirror";
 
 import {ref, onMounted} from "vue";
 import {ElMessage} from "element-plus";
-import router from "../router";
-import postApi from "../service/post";
-import pageApi from "../service/page";
 
-const props = defineProps(["articleType", "articleId"]);
-
-const api = props.articleType === "post" ? postApi : pageApi;
+const emit = defineEmits(["save"]);
+const props = defineProps(["articleId", "articleApi"]);
+const api = props.articleApi;
 
 const articleDetail = ref({});
 onMounted(async () => {
@@ -65,9 +62,7 @@ async function handleSave() {
         const {code, data} = await api.create(articleDetail.value);
         if (code) return;
         ElMessage.success("success");
-        router.replace(props.articleType === "post" ? 
-            {"name":"PostDetail", "params":{"postId": data._id}}:
-            {"name":"PageDetail", "params":{"pageId": data._id}});
+        emit("save", data);
     }
 }
 </script>

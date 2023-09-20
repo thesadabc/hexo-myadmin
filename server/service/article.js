@@ -29,15 +29,13 @@ module.exports = class ArticleService {
     /**
      *  @return doc array
      */
-    list({category, title, tag}, page = 0, pageSize = 15) {
-        return this.model.filter(i => 
+    list({category, title, tag}) {
+        return this.model.filter(i =>
             (!category || i.categories.some(c => c.name === category)) &&
                 (!tag || i.tags.some(c => c.name === tag)) &&
                 (!title || i.title.includes(title)),
         )
-            .sort("date", -1)
-            .skip(page * pageSize)
-            .limit(pageSize);
+            .sort("date", -1);
     }
 
     /**

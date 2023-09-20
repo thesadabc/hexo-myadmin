@@ -4,6 +4,49 @@
     class="page"
     element-loading-text="loading..."
   >
+    <el-header v-if="filter">
+      <el-form inline>
+        <el-form-item>
+          <el-select
+            v-model="filterForm.category"
+            placeholder="category"
+            clearable
+          >
+            <el-option
+              v-for="(c,idx) in categoryOptions"
+              :key="idx"
+              :label="c"
+              :value="c"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-select
+            v-model="filterForm.tag"
+            filterable
+            remote
+            clearable
+            remote-show-suffix
+            :remote-method="searchTagName"
+            placeholder="tags"
+          >
+            <el-option
+              v-for="(t,idx) in tagOptions"
+              :key="idx"
+              :label="t"
+              :value="t"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-input
+            v-model="filterForm.title"
+            placeholder="title"
+            clearable
+          />
+        </el-form-item>
+      </el-form>
+    </el-header>
     <el-main class="page-body">
       <el-table :data="tableData">
         <el-table-column
@@ -25,7 +68,7 @@
           prop="categories"
           label="Categories"
         />
-        <el-table-column 
+        <el-table-column
           v-if="articleType==='post'"
           prop="tags"
           label="Tags"
@@ -96,7 +139,7 @@
         v-model:current-page="currentPage"
         small
         background
-        layout="prev, pager, next"
+        layout="->, prev, pager, next"
         :page-size="15"
         :total="total"
       />
@@ -105,32 +148,42 @@
 </template>
 
 <script setup>
-import {ref, onMounted, computed, watch} from "vue";
+import {ref, reactive, onMounted, computed, watch} from "vue";
 import {ElMessage} from "element-plus";
 import dateFormat from "dateformat";
 
 import postApi from "../service/post";
 import pageApi from "../service/page";
+import tagApi from "../service/tag";
 
-const props = defineProps(["articleType"]);
+const props = defineProps({
+    "articleType": String,
+    "filter": {
+        "type": Boolean,
+        "default": false,
+    }});
 const api = props.articleType === "post" ? postApi : pageApi;
+
+const filterForm = reactive({});
+const categoryOptions = ref([]);
+const tagOptions = ref([]);
 
 const articleList = ref([]);
 const total = ref(0);
 const currentPage = ref(1);
 const isLoading = ref(true);
 
-const tableData = computed(() => 
+const tableData = computed(() =>
     articleList.value.map((p)=> ({
         "_id": p._id,
         "title": p.title,
         "link": p.link,
         "tags": p.tags?.join(", ") || "-",
         "categories": p.categories?.join(", ") || "-",
-        "updated": dateFormat(new Date(p.updated), "yyyy-mm-dd"),
-        "date": dateFormat(new Date(p.date), "yyyy-mm-dd"),
+        "updated": dateFormat(new Date(p.updated), "yyyy-mm-dd hh:MM:ss"),
+        "date": dateFormat(new Date(p.date), "yyyy-mm-dd hh:MM:ss"),
         "isDraft": p.isDraft,
-        "to": props.articleType === "post" ? 
+        "to": props.articleType === "post" ?
             {"name":"PostDetail", "params":{"postId": p._id}}:
             {"name":"PageDetail", "params":{"pageId": p._id}},
 
@@ -165,21 +218,44 @@ async function handleRemove(articleId){
     articleList.value.splice(pIdx, 1);
 }
 
-async function loadList(){
+async function loadList(page = 1){
     isLoading.value = true;
-    const {data} = await api.list(currentPage.value);
+    const options = Object.assign({page}, filterForm);
+    const {data} = await api.list(options);
     articleList.value = data.list;
     total.value = data.total;
+    currentPage.value = page;
     isLoading.value = false;
 }
+
+async function searchTagName(name) {
+    const {data} = await tagApi.getTagList(name);
+    if (data){
+        tagOptions.value  = data.list;
+    }
+}
+async function searchCategoryName() {
+    const {data} = await tagApi.getCategoryList();
+    if (data){
+        categoryOptions.value = data.list;
+    }
+}
+
+watch(filterForm, () => loadList(1));
 watch(currentPage, loadList);
-onMounted(loadList);
+onMounted(() => {
+    loadList(1);
+    if (props.filter) {
+        searchCategoryName();
+    }
+});
 </script>
 
 <style scoped>
+  .el-header {height: auto; padding: 10px; border-bottom: 1px solid var(--el-border-color);}
+  .el-form-item {margin-bottom: 0;}
   .el-table {height: 100%;}
   .el-table .el-button {width: 80px;}
   .page-footer {text-align: right;}
-  .el-pagination {justify-content: right;}
 </style>
 

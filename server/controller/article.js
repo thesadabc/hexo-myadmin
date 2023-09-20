@@ -27,10 +27,15 @@ module.exports = {
         const title = this.req.query.title?.trim();
         const category = this.req.query.category?.trim();
         const tag = this.req.query.tag?.trim();
+        const pageSize = 15;
+        const postList = this.service[type].list({category, title, tag});
 
-        const postList = this.service[type].list({category, title, tag}, page);
-        const list = postList.map(p => articleMapping(p, false));
-        this.res.send({list, "total": postList.length});
+        const total = postList.length;
+        const list = postList
+            .skip(page * pageSize)
+            .limit(pageSize)
+            .map(p => articleMapping(p, false));
+        this.res.send({list, total});
     },
 
     detail(type, id) {

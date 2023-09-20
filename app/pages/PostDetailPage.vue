@@ -1,12 +1,13 @@
 <template>
   <article-detail
-    article-type="post"
+    :article-api="postApi"
     :article-id="route.params.postId"
   />
 </template>
 
 <script setup>
-import articleDetail from "../components/ArticleEditorCom.vue";
 import {useRoute} from "vue-router";
+import articleDetail from "../components/ArticleEditorCom.vue";
+import postApi from "../service/post";
 const route = useRoute();
 </script>

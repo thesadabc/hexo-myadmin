@@ -2,7 +2,9 @@
 
 const {"http":{Router, methods}} = require("director");
 const ArticleService = require("./service/article");
+const CategoryService = require("./service/tag");
 const articleController = require("./controller/article");
+const tagController = require("./controller/tag");
 const authController = require("./controller/auth");
 
 const router = new Router();
@@ -32,19 +34,24 @@ module.exports = function (hexo) {
         this.service = {
             "post": new ArticleService(hexo, "Post"),
             "page": new ArticleService(hexo, "Page"),
+            "category": new CategoryService(hexo, "Category"),
+            "tag": new CategoryService(hexo, "Tag"),
         };
     });
 
-    router.param("type", /(post|page)/);
+    router.param("arttype", /(post|page)/);
     router.post("/login", authController.login);
-    router.get("/:type", articleController.list);
-    router.get("/:type/:id", articleController.detail);
-    router.get("/:type/:id/raw", articleController.raw);
-    router.post("/:type", articleController.create);
-    router.put("/:type/:id", articleController.update);
-    router.delete("/:type/:id", articleController.delete);
+    router.get("/:arttype", articleController.list);
+    router.get("/:arttype/:id", articleController.detail);
+    router.get("/:arttype/:id/raw", articleController.raw);
+    router.post("/:arttype", articleController.create);
+    router.put("/:arttype/:id", articleController.update);
+    router.delete("/:arttype/:id", articleController.delete);
     router.post("/post/:id/publish", articleController.publishPost);
     router.post("/post/:id/unpublish", articleController.unpublishPost);
+
+    router.param("tagtype", /(tag|category)/);
+    router.get("/:tagtype", tagController.list);
 
     return router.dispatch.bind(router);
 };
