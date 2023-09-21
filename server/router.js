@@ -3,8 +3,10 @@
 const {"http":{Router, methods}} = require("director");
 const ArticleService = require("./service/article");
 const CategoryService = require("./service/tag");
+const ConfigService = require("./service/config");
 const articleController = require("./controller/article");
 const tagController = require("./controller/tag");
+const configController = require("./controller/config");
 const authController = require("./controller/auth");
 
 const router = new Router();
@@ -35,6 +37,7 @@ module.exports = function (hexo) {
             "page": new ArticleService(hexo, "Page"),
             "category": new CategoryService(hexo, "Category"),
             "tag": new CategoryService(hexo, "Tag"),
+            "config": new ConfigService(hexo),
         };
     });
 
@@ -51,6 +54,11 @@ module.exports = function (hexo) {
 
     router.param("tagtype", /(tag|category)/);
     router.get("/:tagtype", tagController.list);
+
+    router.get("/config", configController.getConfig);
+    router.post("/config", configController.updateConfig);
+    router.get("/themeconfig", configController.getThemeConfig);
+    router.post("/themeconfig", configController.updateThemeConfig);
 
     return router.dispatch.bind(router);
 };

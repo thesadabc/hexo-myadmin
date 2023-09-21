@@ -39,6 +39,16 @@ const routes = [
         "props": true,
     },
     {
+        "path": "/config",
+        "name": "Config",
+        "component": () => import("./pages/ConfigPage.vue"),
+    },
+    {
+        "path": "/themeconfig",
+        "name": "ThemeConfig",
+        "component": () => import("./pages/ThemeConfigPage.vue"),
+    },
+    {
         "path": "/:pathMatch(.*)*",
         "component": () => import("./pages/ErrorPage.vue"),
     },

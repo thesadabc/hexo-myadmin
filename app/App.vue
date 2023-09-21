@@ -30,6 +30,12 @@
             AddPage
           </el-menu-item>
         </el-sub-menu>
+        <el-menu-item :index="menus.Config.path">
+          Config
+        </el-menu-item>
+        <el-menu-item :index="menus.ThemeConfig.path">
+          ThemeConfig
+        </el-menu-item>
         <div class="flex-grow" />
         <a
           href="../"
@@ -54,6 +60,8 @@ const menus = {
     "AddPost": routes.find(r => r.name === "PostAdd"),
     "PageList": routes.find(r => r.name === "PageList"),
     "AddPage": routes.find(r => r.name === "PageAdd"),
+    "Config": routes.find(r => r.name === "Config"),
+    "ThemeConfig": routes.find(r => r.name === "ThemeConfig"),
 };
 </script>
 
