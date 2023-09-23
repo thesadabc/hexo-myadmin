@@ -1,3 +1,7 @@
+# Deprecated
+
+Rewrited with vue3, refer to [default v1 branch](https://github.com/thesadabc/hexo-myadmin)
+
 # hexo-myadmin
 
 a hexo dashboard plugin, for live hexo server.
